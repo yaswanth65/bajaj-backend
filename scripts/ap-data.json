@@ -1,0 +1,1252 @@
+AP_BRANCHES_LENGTH=100
+{
+  "ams": [
+    {
+      "name": "Sai Nikhil",
+      "email": "sainikhil@gmail.com",
+      "aaNames": [
+        "Subash Mani",
+        "Siva Sai",
+        "Sandhya Rani"
+      ],
+      "branches": [
+        {
+          "name": "Addanki",
+          "city": "Prakasam",
+          "district": "Prakasam",
+          "code": 50001098
+        },
+        {
+          "name": "Adoni",
+          "city": "Kurnool",
+          "district": "Kurnool",
+          "code": 50000003
+        },
+        {
+          "name": "Allagadda",
+          "city": "Kurnool",
+          "district": "Kurnool",
+          "code": 50001931
+        },
+        {
+          "name": "Amalapuram",
+          "city": "East Godavari",
+          "district": "Konaseema",
+          "code": 50000017
+        },
+        {
+          "name": "Amaravati",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50001012
+        },
+        {
+          "name": "Anakapalle",
+          "city": "Visakhapatnam",
+          "district": "Anakapalli",
+          "code": 50000030
+        },
+        {
+          "name": "Anantapur",
+          "city": "Anantpur",
+          "district": "Anantapur",
+          "code": 50000032
+        },
+        {
+          "name": "Bhimavaram",
+          "city": "Bhimavaram New",
+          "district": "West Godavari",
+          "code": 50000098
+        },
+        {
+          "name": "Chilakaluripet",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50000154
+        },
+        {
+          "name": "Chirala",
+          "city": "Prakasam",
+          "district": "Prakasam",
+          "code": 50000157
+        },
+        {
+          "name": "Chittoor",
+          "city": "Chittoor",
+          "district": "Chittoor",
+          "code": 50000160
+        },
+        {
+          "name": "Dharmavaram",
+          "city": "Anantpur",
+          "district": "Sri Sathya Sai",
+          "code": 50000205
+        },
+        {
+          "name": "Eluru",
+          "city": "Eluru",
+          "district": "Eluru",
+          "code": 50000219
+        },
+        {
+          "name": "Eluru Additional",
+          "city": "Eluru",
+          "district": "Eluru",
+          "code": 50007158
+        },
+        {
+          "name": "Gannavaram",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50001137
+        },
+        {
+          "name": "Giddalur",
+          "city": "Prakasam",
+          "district": "Prakasam",
+          "code": 50000908
+        },
+        {
+          "name": "Gudivada",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50000242
+        },
+        {
+          "name": "Gudur",
+          "city": "Nellore",
+          "district": "Spsr Nellore",
+          "code": 50000244
+        },
+        {
+          "name": "Guntakal",
+          "city": "Anantpur",
+          "district": "Anantapur",
+          "code": 50000248
+        },
+        {
+          "name": "Guntur",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50000249
+        },
+        {
+          "name": "Guntur Additional",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50007159
+        },
+        {
+          "name": "Hanuman Junction",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50005291
+        },
+        {
+          "name": "Hindupur",
+          "city": "Anantpur",
+          "district": "Sri Sathya Sai",
+          "code": 50001038
+        },
+        {
+          "name": "Jaggayyapeta",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50001025
+        },
+        {
+          "name": "Jangareddygudem",
+          "city": "Jangareddygudem",
+          "district": "Eluru",
+          "code": 50000850
+        },
+        {
+          "name": "Kadapa",
+          "city": "Cuddapah",
+          "district": "Y.S.R. Kadapa",
+          "code": 50000314
+        },
+        {
+          "name": "Kadapa Additional",
+          "city": "Cuddapah",
+          "district": "Y.S.R. Kadapa",
+          "code": 50007172
+        },
+        {
+          "name": "Kadiri",
+          "city": "Anantpur",
+          "district": "Sri Sathya Sai",
+          "code": 50000316
+        },
+        {
+          "name": "Kakinada",
+          "city": "East Godavari",
+          "district": "Kakinada",
+          "code": 50000320
+        },
+        {
+          "name": "Kakinada Additional",
+          "city": "East Godavari",
+          "district": "Kakinada",
+          "code": 50007160
+        },
+        {
+          "name": "Kakinada Additional 4Th Floor",
+          "city": "East Godavari",
+          "district": "Kakinada",
+          "code": 50007160
+        },
+        {
+          "name": "Kalyandurg",
+          "city": "Anantpur",
+          "district": "Anantapur",
+          "code": 50001984
+        },
+        {
+          "name": "Kandakur",
+          "city": "Prakasam",
+          "district": "Prakasam",
+          "code": 50005210
+        }
+      ]
+    },
+    {
+      "name": "Pandla Munirathnam",
+      "email": "munirathnam@gmail.com",
+      "aaNames": [
+        "E Prem Kumar",
+        "Rajesh Yelakuntla",
+        "Anantapur AA"
+      ],
+      "branches": [
+        {
+          "name": "Kasibugga Palasa",
+          "city": "Srikakulam",
+          "district": "Srikakulam",
+          "code": 50000531
+        },
+        {
+          "name": "Kavali",
+          "city": "Nellore",
+          "district": "Spsr Nellore",
+          "code": 50000352
+        },
+        {
+          "name": "Kondapalli",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50001136
+        },
+        {
+          "name": "Kuppam",
+          "city": "Chittoor",
+          "district": "Chittoor",
+          "code": 50005208
+        },
+        {
+          "name": "Kurnool",
+          "city": "Kurnool",
+          "district": "Kurnool",
+          "code": 50000401
+        },
+        {
+          "name": "Machilipatnam",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50000418
+        },
+        {
+          "name": "Madanapalle",
+          "city": "Chittoor",
+          "district": "Annamayya",
+          "code": 50000419
+        },
+        {
+          "name": "Madanapalle Additional",
+          "city": "Chittoor",
+          "district": "Annamayya",
+          "code": 50007173
+        },
+        {
+          "name": "Mandapeta",
+          "city": "East Godavari",
+          "district": "East Godavari",
+          "code": 50000898
+        },
+        {
+          "name": "Mangalagiri",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50001154
+        },
+        {
+          "name": "Markapur",
+          "city": "Prakasam",
+          "district": "Prakasam",
+          "code": 50001030
+        },
+        {
+          "name": "Naidupetta",
+          "city": "Nellore",
+          "district": "Tirupati",
+          "code": 50005212
+        },
+        {
+          "name": "Nandikotkur",
+          "city": "Kurnool",
+          "district": "Kurnool",
+          "code": 50001930
+        },
+        {
+          "name": "Nandyal",
+          "city": "Kurnool",
+          "district": "Nandyal",
+          "code": 50000494
+        },
+        {
+          "name": "Narasaraopet",
+          "city": "Guntur",
+          "district": "Palnadu",
+          "code": 50000495
+        },
+        {
+          "name": "Narsapur",
+          "city": "Narsapur",
+          "district": "West Godavari",
+          "code": 50000498
+        },
+        {
+          "name": "Narsipatnam",
+          "city": "Visakhapatnam",
+          "district": "Visakhapatnam",
+          "code": 50005209
+        },
+        {
+          "name": "Nellore",
+          "city": "Nellore",
+          "district": "Spsr Nellore",
+          "code": 50000510
+        },
+        {
+          "name": "Nellore Additional",
+          "city": "Nellore",
+          "district": "Spsr Nellore",
+          "code": 50007174
+        },
+        {
+          "name": "Nuziveedu",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50000907
+        },
+        {
+          "name": "Ongole",
+          "city": "Prakasam",
+          "district": "Prakasam",
+          "code": 50000520
+        },
+        {
+          "name": "Ongole Additioal",
+          "city": "Prakasam",
+          "district": "Prakasam",
+          "code": 50008018
+        },
+        {
+          "name": "Paderu",
+          "city": "Visakhapatnam",
+          "district": "Alluri Sitharama Raju",
+          "code": 50003644
+        },
+        {
+          "name": "Palakollu",
+          "city": "Palakollu",
+          "district": "West Godavari",
+          "code": 50000528
+        },
+        {
+          "name": "Palmaner",
+          "city": "Chittoor",
+          "district": "Chittoor",
+          "code": 50000897
+        },
+        {
+          "name": "Parvathipuram",
+          "city": "Vizianagaram",
+          "district": "Parvathipuram Manyam",
+          "code": 50000543
+        },
+        {
+          "name": "Piduguralla",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50000820
+        },
+        {
+          "name": "Pileru",
+          "city": "Chittoor",
+          "district": "Annamayya",
+          "code": 50000910
+        },
+        {
+          "name": "Ponnur",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50000851
+        },
+        {
+          "name": "Proddutur",
+          "city": "Proddatur",
+          "district": "Y.S.R. Kadapa",
+          "code": 50000568
+        },
+        {
+          "name": "Pulivendula",
+          "city": "Pulivendla",
+          "district": "Y.S.R. Kadapa",
+          "code": 50005206
+        },
+        {
+          "name": "Railway Koduru",
+          "city": "Railway Koduru",
+          "district": "Tirupati",
+          "code": 50001032
+        },
+        {
+          "name": "Rajahmundry",
+          "city": "East Godavari",
+          "district": "East Godavari",
+          "code": 50000587
+        }
+      ]
+    },
+    {
+      "name": "Pachari Teja",
+      "email": "pachari@gmail.com",
+      "aaNames": [
+        "Shaik Moulali Basha",
+        "Subash Manikanta",
+        "Edenaga Siva Sai"
+      ],
+      "branches": [
+        {
+          "name": "Rajahmundry Additional",
+          "city": "East Godavari",
+          "district": "East Godavari",
+          "code": 11200056
+        },
+        {
+          "name": "Rajam",
+          "city": "Srikakulam",
+          "district": "Srikakulam",
+          "code": 50001084
+        },
+        {
+          "name": "Rajampet",
+          "city": "Rajampet",
+          "district": "Annamayya",
+          "code": 50000849
+        },
+        {
+          "name": "Rayachoti",
+          "city": "Rayachoti",
+          "district": "Annamayya",
+          "code": 50000613
+        },
+        {
+          "name": "Rayadurg",
+          "city": "Anantpur",
+          "district": "Anantapur",
+          "code": 50005339
+        },
+        {
+          "name": "Repalle",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50000896
+        },
+        {
+          "name": "S Kota",
+          "city": "Srungavarapu Kota",
+          "district": "Vizianagaram",
+          "code": 50002019
+        },
+        {
+          "name": "Samalkota",
+          "city": "East Godavari",
+          "district": "East Godavari",
+          "code": 50000634
+        },
+        {
+          "name": "Srikakulam",
+          "city": "Srikakulam",
+          "district": "Srikakulam",
+          "code": 50000703
+        },
+        {
+          "name": "Srikalahasti",
+          "city": "Chittoor",
+          "district": "Tirupati",
+          "code": 50001101
+        },
+        {
+          "name": "Sullurpeta",
+          "city": "Nellore",
+          "district": "Tirupati",
+          "code": 50000708
+        },
+        {
+          "name": "Tadepalligudem",
+          "city": "Tadepalligudem",
+          "district": "West Godavari",
+          "code": 50000714
+        },
+        {
+          "name": "Tadipatri",
+          "city": "Anantpur",
+          "district": "Anantapur",
+          "code": 50000715
+        },
+        {
+          "name": "Tagarapuvalasa",
+          "city": "Visakhapatnam",
+          "district": "Visakhapatnam",
+          "code": 50005211
+        },
+        {
+          "name": "Tanuku",
+          "city": "Tanuku",
+          "district": "West Godavari",
+          "code": 50000721
+        },
+        {
+          "name": "Tenali",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50000724
+        },
+        {
+          "name": "Tirupati 1st Floor",
+          "city": "Chittoor",
+          "district": "Tirupati",
+          "code": 50000741
+        },
+        {
+          "name": "Tirupati 2nd Floor",
+          "city": "Chittoor",
+          "district": "Tirupati",
+          "code": 11200058
+        },
+        {
+          "name": "Tuni",
+          "city": "East Godavari",
+          "district": "East Godavari",
+          "code": 50000750
+        },
+        {
+          "name": "Venkatagiri",
+          "city": "Nellore",
+          "district": "Tirupati",
+          "code": 50005213
+        },
+        {
+          "name": "Vijayawada Additional 1St Floor",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50000778
+        },
+        {
+          "name": "Vijayawada Additional 2Nd Floor",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 11200061
+        },
+        {
+          "name": "Vijayawada Additional 5Th Floor",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": "-"
+        },
+        {
+          "name": "Vijayawada AF",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50006916
+        },
+        {
+          "name": "Vijayawada CSB",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": "-"
+        },
+        {
+          "name": "Vijayawada GH 1",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 11200129
+        },
+        {
+          "name": "Vijayawada GH 2",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": "-"
+        },
+        {
+          "name": "Vijayawada Rtc",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 11200069
+        },
+        {
+          "name": "Visakhapatnam",
+          "city": "Visakhapatnam",
+          "district": "Visakhapatnam",
+          "code": 50002121
+        },
+        {
+          "name": "Visakhapatnam Addtiional Ground Floor",
+          "city": "Visakhapatnam",
+          "district": "Visakhapatnam",
+          "code": 50007161
+        },
+        {
+          "name": "Visakhapatnam CSB",
+          "city": "Visakhapatnam",
+          "district": "Visakhapatnam",
+          "code": 50000783
+        },
+        {
+          "name": "Vizag Slpl",
+          "city": "Visakhapatnam",
+          "district": "Visakhapatnam",
+          "code": 11200063
+        },
+        {
+          "name": "Vizianagram",
+          "city": "Vizianagaram",
+          "district": "Vizianagaram",
+          "code": 50000786
+        }
+      ]
+    }
+  ],
+  "aaGroups": [
+    [
+      [
+        {
+          "name": "Addanki",
+          "city": "Prakasam",
+          "district": "Prakasam",
+          "code": 50001098
+        },
+        {
+          "name": "Adoni",
+          "city": "Kurnool",
+          "district": "Kurnool",
+          "code": 50000003
+        },
+        {
+          "name": "Allagadda",
+          "city": "Kurnool",
+          "district": "Kurnool",
+          "code": 50001931
+        },
+        {
+          "name": "Amalapuram",
+          "city": "East Godavari",
+          "district": "Konaseema",
+          "code": 50000017
+        },
+        {
+          "name": "Amaravati",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50001012
+        },
+        {
+          "name": "Anakapalle",
+          "city": "Visakhapatnam",
+          "district": "Anakapalli",
+          "code": 50000030
+        },
+        {
+          "name": "Anantapur",
+          "city": "Anantpur",
+          "district": "Anantapur",
+          "code": 50000032
+        },
+        {
+          "name": "Bhimavaram",
+          "city": "Bhimavaram New",
+          "district": "West Godavari",
+          "code": 50000098
+        },
+        {
+          "name": "Chilakaluripet",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50000154
+        },
+        {
+          "name": "Chirala",
+          "city": "Prakasam",
+          "district": "Prakasam",
+          "code": 50000157
+        },
+        {
+          "name": "Chittoor",
+          "city": "Chittoor",
+          "district": "Chittoor",
+          "code": 50000160
+        }
+      ],
+      [
+        {
+          "name": "Dharmavaram",
+          "city": "Anantpur",
+          "district": "Sri Sathya Sai",
+          "code": 50000205
+        },
+        {
+          "name": "Eluru",
+          "city": "Eluru",
+          "district": "Eluru",
+          "code": 50000219
+        },
+        {
+          "name": "Eluru Additional",
+          "city": "Eluru",
+          "district": "Eluru",
+          "code": 50007158
+        },
+        {
+          "name": "Gannavaram",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50001137
+        },
+        {
+          "name": "Giddalur",
+          "city": "Prakasam",
+          "district": "Prakasam",
+          "code": 50000908
+        },
+        {
+          "name": "Gudivada",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50000242
+        },
+        {
+          "name": "Gudur",
+          "city": "Nellore",
+          "district": "Spsr Nellore",
+          "code": 50000244
+        },
+        {
+          "name": "Guntakal",
+          "city": "Anantpur",
+          "district": "Anantapur",
+          "code": 50000248
+        },
+        {
+          "name": "Guntur",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50000249
+        },
+        {
+          "name": "Guntur Additional",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50007159
+        },
+        {
+          "name": "Hanuman Junction",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50005291
+        }
+      ],
+      [
+        {
+          "name": "Hindupur",
+          "city": "Anantpur",
+          "district": "Sri Sathya Sai",
+          "code": 50001038
+        },
+        {
+          "name": "Jaggayyapeta",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50001025
+        },
+        {
+          "name": "Jangareddygudem",
+          "city": "Jangareddygudem",
+          "district": "Eluru",
+          "code": 50000850
+        },
+        {
+          "name": "Kadapa",
+          "city": "Cuddapah",
+          "district": "Y.S.R. Kadapa",
+          "code": 50000314
+        },
+        {
+          "name": "Kadapa Additional",
+          "city": "Cuddapah",
+          "district": "Y.S.R. Kadapa",
+          "code": 50007172
+        },
+        {
+          "name": "Kadiri",
+          "city": "Anantpur",
+          "district": "Sri Sathya Sai",
+          "code": 50000316
+        },
+        {
+          "name": "Kakinada",
+          "city": "East Godavari",
+          "district": "Kakinada",
+          "code": 50000320
+        },
+        {
+          "name": "Kakinada Additional",
+          "city": "East Godavari",
+          "district": "Kakinada",
+          "code": 50007160
+        },
+        {
+          "name": "Kakinada Additional 4Th Floor",
+          "city": "East Godavari",
+          "district": "Kakinada",
+          "code": 50007160
+        },
+        {
+          "name": "Kalyandurg",
+          "city": "Anantpur",
+          "district": "Anantapur",
+          "code": 50001984
+        },
+        {
+          "name": "Kandakur",
+          "city": "Prakasam",
+          "district": "Prakasam",
+          "code": 50005210
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "name": "Kasibugga Palasa",
+          "city": "Srikakulam",
+          "district": "Srikakulam",
+          "code": 50000531
+        },
+        {
+          "name": "Kavali",
+          "city": "Nellore",
+          "district": "Spsr Nellore",
+          "code": 50000352
+        },
+        {
+          "name": "Kondapalli",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50001136
+        },
+        {
+          "name": "Kuppam",
+          "city": "Chittoor",
+          "district": "Chittoor",
+          "code": 50005208
+        },
+        {
+          "name": "Kurnool",
+          "city": "Kurnool",
+          "district": "Kurnool",
+          "code": 50000401
+        },
+        {
+          "name": "Machilipatnam",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50000418
+        },
+        {
+          "name": "Madanapalle",
+          "city": "Chittoor",
+          "district": "Annamayya",
+          "code": 50000419
+        },
+        {
+          "name": "Madanapalle Additional",
+          "city": "Chittoor",
+          "district": "Annamayya",
+          "code": 50007173
+        },
+        {
+          "name": "Mandapeta",
+          "city": "East Godavari",
+          "district": "East Godavari",
+          "code": 50000898
+        },
+        {
+          "name": "Mangalagiri",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50001154
+        },
+        {
+          "name": "Markapur",
+          "city": "Prakasam",
+          "district": "Prakasam",
+          "code": 50001030
+        }
+      ],
+      [
+        {
+          "name": "Naidupetta",
+          "city": "Nellore",
+          "district": "Tirupati",
+          "code": 50005212
+        },
+        {
+          "name": "Nandikotkur",
+          "city": "Kurnool",
+          "district": "Kurnool",
+          "code": 50001930
+        },
+        {
+          "name": "Nandyal",
+          "city": "Kurnool",
+          "district": "Nandyal",
+          "code": 50000494
+        },
+        {
+          "name": "Narasaraopet",
+          "city": "Guntur",
+          "district": "Palnadu",
+          "code": 50000495
+        },
+        {
+          "name": "Narsapur",
+          "city": "Narsapur",
+          "district": "West Godavari",
+          "code": 50000498
+        },
+        {
+          "name": "Narsipatnam",
+          "city": "Visakhapatnam",
+          "district": "Visakhapatnam",
+          "code": 50005209
+        },
+        {
+          "name": "Nellore",
+          "city": "Nellore",
+          "district": "Spsr Nellore",
+          "code": 50000510
+        },
+        {
+          "name": "Nellore Additional",
+          "city": "Nellore",
+          "district": "Spsr Nellore",
+          "code": 50007174
+        },
+        {
+          "name": "Nuziveedu",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50000907
+        },
+        {
+          "name": "Ongole",
+          "city": "Prakasam",
+          "district": "Prakasam",
+          "code": 50000520
+        },
+        {
+          "name": "Ongole Additioal",
+          "city": "Prakasam",
+          "district": "Prakasam",
+          "code": 50008018
+        }
+      ],
+      [
+        {
+          "name": "Paderu",
+          "city": "Visakhapatnam",
+          "district": "Alluri Sitharama Raju",
+          "code": 50003644
+        },
+        {
+          "name": "Palakollu",
+          "city": "Palakollu",
+          "district": "West Godavari",
+          "code": 50000528
+        },
+        {
+          "name": "Palmaner",
+          "city": "Chittoor",
+          "district": "Chittoor",
+          "code": 50000897
+        },
+        {
+          "name": "Parvathipuram",
+          "city": "Vizianagaram",
+          "district": "Parvathipuram Manyam",
+          "code": 50000543
+        },
+        {
+          "name": "Piduguralla",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50000820
+        },
+        {
+          "name": "Pileru",
+          "city": "Chittoor",
+          "district": "Annamayya",
+          "code": 50000910
+        },
+        {
+          "name": "Ponnur",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50000851
+        },
+        {
+          "name": "Proddutur",
+          "city": "Proddatur",
+          "district": "Y.S.R. Kadapa",
+          "code": 50000568
+        },
+        {
+          "name": "Pulivendula",
+          "city": "Pulivendla",
+          "district": "Y.S.R. Kadapa",
+          "code": 50005206
+        },
+        {
+          "name": "Railway Koduru",
+          "city": "Railway Koduru",
+          "district": "Tirupati",
+          "code": 50001032
+        },
+        {
+          "name": "Rajahmundry",
+          "city": "East Godavari",
+          "district": "East Godavari",
+          "code": 50000587
+        }
+      ]
+    ],
+    [
+      [
+        {
+          "name": "Rajahmundry Additional",
+          "city": "East Godavari",
+          "district": "East Godavari",
+          "code": 11200056
+        },
+        {
+          "name": "Rajam",
+          "city": "Srikakulam",
+          "district": "Srikakulam",
+          "code": 50001084
+        },
+        {
+          "name": "Rajampet",
+          "city": "Rajampet",
+          "district": "Annamayya",
+          "code": 50000849
+        },
+        {
+          "name": "Rayachoti",
+          "city": "Rayachoti",
+          "district": "Annamayya",
+          "code": 50000613
+        },
+        {
+          "name": "Rayadurg",
+          "city": "Anantpur",
+          "district": "Anantapur",
+          "code": 50005339
+        },
+        {
+          "name": "Repalle",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50000896
+        },
+        {
+          "name": "S Kota",
+          "city": "Srungavarapu Kota",
+          "district": "Vizianagaram",
+          "code": 50002019
+        },
+        {
+          "name": "Samalkota",
+          "city": "East Godavari",
+          "district": "East Godavari",
+          "code": 50000634
+        },
+        {
+          "name": "Srikakulam",
+          "city": "Srikakulam",
+          "district": "Srikakulam",
+          "code": 50000703
+        },
+        {
+          "name": "Srikalahasti",
+          "city": "Chittoor",
+          "district": "Tirupati",
+          "code": 50001101
+        },
+        {
+          "name": "Sullurpeta",
+          "city": "Nellore",
+          "district": "Tirupati",
+          "code": 50000708
+        }
+      ],
+      [
+        {
+          "name": "Tadepalligudem",
+          "city": "Tadepalligudem",
+          "district": "West Godavari",
+          "code": 50000714
+        },
+        {
+          "name": "Tadipatri",
+          "city": "Anantpur",
+          "district": "Anantapur",
+          "code": 50000715
+        },
+        {
+          "name": "Tagarapuvalasa",
+          "city": "Visakhapatnam",
+          "district": "Visakhapatnam",
+          "code": 50005211
+        },
+        {
+          "name": "Tanuku",
+          "city": "Tanuku",
+          "district": "West Godavari",
+          "code": 50000721
+        },
+        {
+          "name": "Tenali",
+          "city": "Guntur",
+          "district": "Guntur",
+          "code": 50000724
+        },
+        {
+          "name": "Tirupati 1st Floor",
+          "city": "Chittoor",
+          "district": "Tirupati",
+          "code": 50000741
+        },
+        {
+          "name": "Tirupati 2nd Floor",
+          "city": "Chittoor",
+          "district": "Tirupati",
+          "code": 11200058
+        },
+        {
+          "name": "Tuni",
+          "city": "East Godavari",
+          "district": "East Godavari",
+          "code": 50000750
+        },
+        {
+          "name": "Venkatagiri",
+          "city": "Nellore",
+          "district": "Tirupati",
+          "code": 50005213
+        },
+        {
+          "name": "Vijayawada Additional 1St Floor",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50000778
+        },
+        {
+          "name": "Vijayawada Additional 2Nd Floor",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 11200061
+        }
+      ],
+      [
+        {
+          "name": "Vijayawada Additional 5Th Floor",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": "-"
+        },
+        {
+          "name": "Vijayawada AF",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 50006916
+        },
+        {
+          "name": "Vijayawada CSB",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": "-"
+        },
+        {
+          "name": "Vijayawada GH 1",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 11200129
+        },
+        {
+          "name": "Vijayawada GH 2",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": "-"
+        },
+        {
+          "name": "Vijayawada Rtc",
+          "city": "Krishna",
+          "district": "Krishna",
+          "code": 11200069
+        },
+        {
+          "name": "Visakhapatnam",
+          "city": "Visakhapatnam",
+          "district": "Visakhapatnam",
+          "code": 50002121
+        },
+        {
+          "name": "Visakhapatnam Addtiional Ground Floor",
+          "city": "Visakhapatnam",
+          "district": "Visakhapatnam",
+          "code": 50007161
+        },
+        {
+          "name": "Visakhapatnam CSB",
+          "city": "Visakhapatnam",
+          "district": "Visakhapatnam",
+          "code": 50000783
+        },
+        {
+          "name": "Vizag Slpl",
+          "city": "Visakhapatnam",
+          "district": "Visakhapatnam",
+          "code": 11200063
+        },
+        {
+          "name": "Vizianagram",
+          "city": "Vizianagaram",
+          "district": "Vizianagaram",
+          "code": 50000786
+        }
+      ]
+    ]
+  ]
+}

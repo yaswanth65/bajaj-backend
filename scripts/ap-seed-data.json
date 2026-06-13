@@ -1,0 +1,765 @@
+{
+  "groups": [
+    {
+      "amName": "Nikhil Joshi",
+      "amEmail": "nikhiljoshi@gmail.com",
+      "aas": [
+        {
+          "name": "G Teja",
+          "branches": [
+            {
+              "name": "Addanki",
+              "city": "Prakasam",
+              "district": "Prakasam",
+              "code": "50001098",
+              "address": "South & West"
+            },
+            {
+              "name": "Adoni",
+              "city": "Kurnool",
+              "district": "Kurnool",
+              "code": "50000003",
+              "address": "South & West"
+            },
+            {
+              "name": "Allagadda",
+              "city": "Kurnool",
+              "district": "Kurnool",
+              "code": "50001931",
+              "address": "South & West"
+            },
+            {
+              "name": "Amalapuram",
+              "city": "East Godavari",
+              "district": "Konaseema",
+              "code": "50000017",
+              "address": "South & West"
+            },
+            {
+              "name": "Amaravati",
+              "city": "Guntur",
+              "district": "Guntur",
+              "code": "50001012",
+              "address": "South & West"
+            },
+            {
+              "name": "Anakapalle",
+              "city": "Visakhapatnam",
+              "district": "Anakapalli",
+              "code": "50000030",
+              "address": "South & West"
+            },
+            {
+              "name": "Anantapur",
+              "city": "Anantpur",
+              "district": "Anantapur",
+              "code": "50000032",
+              "address": "South & West"
+            },
+            {
+              "name": "Bhimavaram",
+              "city": "Bhimavaram New",
+              "district": "West Godavari",
+              "code": "50000098",
+              "address": "South & West"
+            },
+            {
+              "name": "Chilakaluripet",
+              "city": "Guntur",
+              "district": "Guntur",
+              "code": "50000154",
+              "address": "South & West"
+            },
+            {
+              "name": "Chirala",
+              "city": "Prakasam",
+              "district": "Prakasam",
+              "code": "50000157",
+              "address": "South & West"
+            },
+            {
+              "name": "Chittoor",
+              "city": "Chittoor",
+              "district": "Chittoor",
+              "code": "50000160",
+              "address": "South & West"
+            }
+          ]
+        },
+        {
+          "name": "Naveen",
+          "branches": [
+            {
+              "name": "Dharmavaram",
+              "city": "Anantpur",
+              "district": "Sri Sathya Sai",
+              "code": "50000205",
+              "address": "South & West"
+            },
+            {
+              "name": "Eluru",
+              "city": "Eluru",
+              "district": "Eluru",
+              "code": "50000219",
+              "address": "South & West"
+            },
+            {
+              "name": "Eluru Additional",
+              "city": "Eluru",
+              "district": "Eluru",
+              "code": "50007158",
+              "address": "South & West"
+            },
+            {
+              "name": "Gannavaram",
+              "city": "Krishna",
+              "district": "Krishna",
+              "code": "50001137",
+              "address": "South & West"
+            },
+            {
+              "name": "Giddalur",
+              "city": "Prakasam",
+              "district": "Prakasam",
+              "code": "50000908",
+              "address": "South & West"
+            },
+            {
+              "name": "Gudivada",
+              "city": "Krishna",
+              "district": "Krishna",
+              "code": "50000242",
+              "address": "South & West"
+            },
+            {
+              "name": "Gudur",
+              "city": "Nellore",
+              "district": "Spsr Nellore",
+              "code": "50000244",
+              "address": "South & West"
+            },
+            {
+              "name": "Guntakal",
+              "city": "Anantpur",
+              "district": "Anantapur",
+              "code": "50000248",
+              "address": "South & West"
+            },
+            {
+              "name": "Guntur",
+              "city": "Guntur",
+              "district": "Guntur",
+              "code": "50000249",
+              "address": "South & West"
+            },
+            {
+              "name": "Guntur Additional",
+              "city": "Guntur",
+              "district": "Guntur",
+              "code": "50007159",
+              "address": "South & West"
+            },
+            {
+              "name": "Hanuman Junction",
+              "city": "Krishna",
+              "district": "Krishna",
+              "code": "50005291",
+              "address": "South & West"
+            }
+          ]
+        },
+        {
+          "name": "Mani Kumari",
+          "branches": [
+            {
+              "name": "Hindupur",
+              "city": "Anantpur",
+              "district": "Sri Sathya Sai",
+              "code": "50001038",
+              "address": "South & West"
+            },
+            {
+              "name": "Jaggayyapeta",
+              "city": "Krishna",
+              "district": "Krishna",
+              "code": "50001025",
+              "address": "South & West"
+            },
+            {
+              "name": "Jangareddygudem",
+              "city": "Jangareddygudem",
+              "district": "Eluru",
+              "code": "50000850",
+              "address": "South & West"
+            },
+            {
+              "name": "Kadapa",
+              "city": "Cuddapah",
+              "district": "Y.S.R. Kadapa",
+              "code": "50000314",
+              "address": "South & West"
+            },
+            {
+              "name": "Kadapa Additional",
+              "city": "Cuddapah",
+              "district": "Y.S.R. Kadapa",
+              "code": "50007172",
+              "address": "South & West"
+            },
+            {
+              "name": "Kadiri",
+              "city": "Anantpur",
+              "district": "Sri Sathya Sai",
+              "code": "50000316",
+              "address": "South & West"
+            },
+            {
+              "name": "Kakinada",
+              "city": "East Godavari",
+              "district": "Kakinada",
+              "code": "50000320",
+              "address": "South & West"
+            },
+            {
+              "name": "Kakinada Additional",
+              "city": "East Godavari",
+              "district": "Kakinada",
+              "code": "50007160",
+              "address": "South & West"
+            },
+            {
+              "name": "Kakinada Additional 4Th Floor",
+              "city": "East Godavari",
+              "district": "Kakinada",
+              "code": "50007160",
+              "address": "South & West"
+            },
+            {
+              "name": "Kalyandurg",
+              "city": "Anantpur",
+              "district": "Anantapur",
+              "code": "50001984",
+              "address": "South & West"
+            },
+            {
+              "name": "Kandakur",
+              "city": "Prakasam",
+              "district": "Prakasam",
+              "code": "50005210",
+              "address": "South & West"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "amName": "Pandla Munirathnam",
+      "amEmail": "munirathnam@gmail.com",
+      "aas": [
+        {
+          "name": "E Prem Kumar",
+          "branches": [
+            {
+              "name": "Kasibugga Palasa",
+              "city": "Srikakulam",
+              "district": "Srikakulam",
+              "code": "50000531",
+              "address": "South & West"
+            },
+            {
+              "name": "Kavali",
+              "city": "Nellore",
+              "district": "Spsr Nellore",
+              "code": "50000352",
+              "address": "South & West"
+            },
+            {
+              "name": "Kondapalli",
+              "city": "Krishna",
+              "district": "Krishna",
+              "code": "50001136",
+              "address": "South & West"
+            },
+            {
+              "name": "Kuppam",
+              "city": "Chittoor",
+              "district": "Chittoor",
+              "code": "50005208",
+              "address": "South & West"
+            },
+            {
+              "name": "Kurnool",
+              "city": "Kurnool",
+              "district": "Kurnool",
+              "code": "50000401",
+              "address": "South & West"
+            },
+            {
+              "name": "Machilipatnam",
+              "city": "Krishna",
+              "district": "Krishna",
+              "code": "50000418",
+              "address": "South & West"
+            },
+            {
+              "name": "Madanapalle",
+              "city": "Chittoor",
+              "district": "Annamayya",
+              "code": "50000419",
+              "address": "South & West"
+            },
+            {
+              "name": "Madanapalle Additional",
+              "city": "Chittoor",
+              "district": "Annamayya",
+              "code": "50007173",
+              "address": "South & West"
+            },
+            {
+              "name": "Mandapeta",
+              "city": "East Godavari",
+              "district": "East Godavari",
+              "code": "50000898",
+              "address": "South & West"
+            },
+            {
+              "name": "Mangalagiri",
+              "city": "Guntur",
+              "district": "Guntur",
+              "code": "50001154",
+              "address": "South & West"
+            },
+            {
+              "name": "Markapur",
+              "city": "Prakasam",
+              "district": "Prakasam",
+              "code": "50001030",
+              "address": "South & West"
+            }
+          ]
+        },
+        {
+          "name": "Rajesh Yelakuntla",
+          "branches": [
+            {
+              "name": "Naidupetta",
+              "city": "Nellore",
+              "district": "Tirupati",
+              "code": "50005212",
+              "address": "South & West"
+            },
+            {
+              "name": "Nandikotkur",
+              "city": "Kurnool",
+              "district": "Kurnool",
+              "code": "50001930",
+              "address": "South & West"
+            },
+            {
+              "name": "Nandyal",
+              "city": "Kurnool",
+              "district": "Nandyal",
+              "code": "50000494",
+              "address": "South & West"
+            },
+            {
+              "name": "Narasaraopet",
+              "city": "Guntur",
+              "district": "Palnadu",
+              "code": "50000495",
+              "address": "South & West"
+            },
+            {
+              "name": "Narsapur",
+              "city": "Narsapur",
+              "district": "West Godavari",
+              "code": "50000498",
+              "address": "South & West"
+            },
+            {
+              "name": "Narsipatnam",
+              "city": "Visakhapatnam",
+              "district": "Visakhapatnam",
+              "code": "50005209",
+              "address": "South & West"
+            },
+            {
+              "name": "Nellore",
+              "city": "Nellore",
+              "district": "Spsr Nellore",
+              "code": "50000510",
+              "address": "South & West"
+            },
+            {
+              "name": "Nellore Additional",
+              "city": "Nellore",
+              "district": "Spsr Nellore",
+              "code": "50007174",
+              "address": "South & West"
+            },
+            {
+              "name": "Nuziveedu",
+              "city": "Krishna",
+              "district": "Krishna",
+              "code": "50000907",
+              "address": "South & West"
+            },
+            {
+              "name": "Ongole",
+              "city": "Prakasam",
+              "district": "Prakasam",
+              "code": "50000520",
+              "address": "South & West"
+            },
+            {
+              "name": "Ongole Additioal",
+              "city": "Prakasam",
+              "district": "Prakasam",
+              "code": "50008018",
+              "address": "South & West"
+            }
+          ]
+        },
+        {
+          "name": "Anantapur AA",
+          "branches": [
+            {
+              "name": "Paderu",
+              "city": "Visakhapatnam",
+              "district": "Alluri Sitharama Raju",
+              "code": "50003644",
+              "address": "South & West"
+            },
+            {
+              "name": "Palakollu",
+              "city": "Palakollu",
+              "district": "West Godavari",
+              "code": "50000528",
+              "address": "South & West"
+            },
+            {
+              "name": "Palmaner",
+              "city": "Chittoor",
+              "district": "Chittoor",
+              "code": "50000897",
+              "address": "South & West"
+            },
+            {
+              "name": "Parvathipuram",
+              "city": "Vizianagaram",
+              "district": "Parvathipuram Manyam",
+              "code": "50000543",
+              "address": "South & West"
+            },
+            {
+              "name": "Piduguralla",
+              "city": "Guntur",
+              "district": "Guntur",
+              "code": "50000820",
+              "address": "South & West"
+            },
+            {
+              "name": "Pileru",
+              "city": "Chittoor",
+              "district": "Annamayya",
+              "code": "50000910",
+              "address": "South & West"
+            },
+            {
+              "name": "Ponnur",
+              "city": "Guntur",
+              "district": "Guntur",
+              "code": "50000851",
+              "address": "South & West"
+            },
+            {
+              "name": "Proddutur",
+              "city": "Proddatur",
+              "district": "Y.S.R. Kadapa",
+              "code": "50000568",
+              "address": "South & West"
+            },
+            {
+              "name": "Pulivendula",
+              "city": "Pulivendla",
+              "district": "Y.S.R. Kadapa",
+              "code": "50005206",
+              "address": "South & West"
+            },
+            {
+              "name": "Railway Koduru",
+              "city": "Railway Koduru",
+              "district": "Tirupati",
+              "code": "50001032",
+              "address": "South & West"
+            },
+            {
+              "name": "Rajahmundry",
+              "city": "East Godavari",
+              "district": "East Godavari",
+              "code": "50000587",
+              "address": "South & West"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "amName": "Pachari Teja",
+      "amEmail": "pachari@gmail.com",
+      "aas": [
+        {
+          "name": "Shaik Moulali Basha",
+          "branches": [
+            {
+              "name": "Rajahmundry Additional",
+              "city": "East Godavari",
+              "district": "East Godavari",
+              "code": "11200056",
+              "address": "South & West"
+            },
+            {
+              "name": "Rajam",
+              "city": "Srikakulam",
+              "district": "Srikakulam",
+              "code": "50001084",
+              "address": "South & West"
+            },
+            {
+              "name": "Rajampet",
+              "city": "Rajampet",
+              "district": "Annamayya",
+              "code": "50000849",
+              "address": "South & West"
+            },
+            {
+              "name": "Rayachoti",
+              "city": "Rayachoti",
+              "district": "Annamayya",
+              "code": "50000613",
+              "address": "South & West"
+            },
+            {
+              "name": "Rayadurg",
+              "city": "Anantpur",
+              "district": "Anantapur",
+              "code": "50005339",
+              "address": "South & West"
+            },
+            {
+              "name": "Repalle",
+              "city": "Guntur",
+              "district": "Guntur",
+              "code": "50000896",
+              "address": "South & West"
+            },
+            {
+              "name": "S Kota",
+              "city": "Srungavarapu Kota",
+              "district": "Vizianagaram",
+              "code": "50002019",
+              "address": "South & West"
+            },
+            {
+              "name": "Samalkota",
+              "city": "East Godavari",
+              "district": "East Godavari",
+              "code": "50000634",
+              "address": "South & West"
+            },
+            {
+              "name": "Srikakulam",
+              "city": "Srikakulam",
+              "district": "Srikakulam",
+              "code": "50000703",
+              "address": "South & West"
+            }
+          ]
+        },
+        {
+          "name": "Subash Manikanta",
+          "branches": [
+            {
+              "name": "Srikalahasti",
+              "city": "Chittoor",
+              "district": "Tirupati",
+              "code": "50001101",
+              "address": "South & West"
+            },
+            {
+              "name": "Sullurpeta",
+              "city": "Nellore",
+              "district": "Tirupati",
+              "code": "50000708",
+              "address": "South & West"
+            },
+            {
+              "name": "Tadepalligudem",
+              "city": "Tadepalligudem",
+              "district": "West Godavari",
+              "code": "50000714",
+              "address": "South & West"
+            },
+            {
+              "name": "Tadipatri",
+              "city": "Anantpur",
+              "district": "Anantapur",
+              "code": "50000715",
+              "address": "South & West"
+            },
+            {
+              "name": "Tagarapuvalasa",
+              "city": "Visakhapatnam",
+              "district": "Visakhapatnam",
+              "code": "50005211",
+              "address": "South & West"
+            },
+            {
+              "name": "Tanuku",
+              "city": "Tanuku",
+              "district": "West Godavari",
+              "code": "50000721",
+              "address": "South & West"
+            },
+            {
+              "name": "Tenali",
+              "city": "Guntur",
+              "district": "Guntur",
+              "code": "50000724",
+              "address": "South & West"
+            },
+            {
+              "name": "Tirupati 1st Floor",
+              "city": "Chittoor",
+              "district": "Tirupati",
+              "code": "50000741",
+              "address": "South & West"
+            }
+          ]
+        },
+        {
+          "name": "Edenaga Siva Sai",
+          "branches": [
+            {
+              "name": "Tirupati 2nd Floor",
+              "city": "Chittoor",
+              "district": "Tirupati",
+              "code": "11200058",
+              "address": "South & West"
+            },
+            {
+              "name": "Tuni",
+              "city": "East Godavari",
+              "district": "East Godavari",
+              "code": "50000750",
+              "address": "South & West"
+            },
+            {
+              "name": "Venkatagiri",
+              "city": "Nellore",
+              "district": "Tirupati",
+              "code": "50005213",
+              "address": "South & West"
+            },
+            {
+              "name": "Vijayawada Additional 1St Floor",
+              "city": "Krishna",
+              "district": "Krishna",
+              "code": "50000778",
+              "address": "South & West"
+            },
+            {
+              "name": "Vijayawada Additional 2Nd Floor",
+              "city": "Krishna",
+              "district": "Krishna",
+              "code": "11200061",
+              "address": "South & West"
+            },
+            {
+              "name": "Vijayawada Additional 5Th Floor",
+              "city": "Krishna",
+              "district": "Krishna",
+              "code": "-",
+              "address": "South & West"
+            },
+            {
+              "name": "Vijayawada AF",
+              "city": "Krishna",
+              "district": "Krishna",
+              "code": "50006916",
+              "address": "South & West"
+            },
+            {
+              "name": "Vijayawada CSB",
+              "city": "Krishna",
+              "district": "Krishna",
+              "code": "-",
+              "address": "South & West"
+            }
+          ]
+        },
+        {
+          "name": "Sandhya Rani",
+          "branches": [
+            {
+              "name": "Vijayawada GH 1",
+              "city": "Krishna",
+              "district": "Krishna",
+              "code": "11200129",
+              "address": "South & West"
+            },
+            {
+              "name": "Vijayawada GH 2",
+              "city": "Krishna",
+              "district": "Krishna",
+              "code": "-",
+              "address": "South & West"
+            },
+            {
+              "name": "Vijayawada Rtc",
+              "city": "Krishna",
+              "district": "Krishna",
+              "code": "11200069",
+              "address": "South & West"
+            },
+            {
+              "name": "Visakhapatnam",
+              "city": "Visakhapatnam",
+              "district": "Visakhapatnam",
+              "code": "50002121",
+              "address": "South & West"
+            },
+            {
+              "name": "Visakhapatnam Addtiional Ground Floor",
+              "city": "Visakhapatnam",
+              "district": "Visakhapatnam",
+              "code": "50007161",
+              "address": "South & West"
+            },
+            {
+              "name": "Visakhapatnam CSB",
+              "city": "Visakhapatnam",
+              "district": "Visakhapatnam",
+              "code": "50000783",
+              "address": "South & West"
+            },
+            {
+              "name": "Vizag Slpl",
+              "city": "Visakhapatnam",
+              "district": "Visakhapatnam",
+              "code": "11200063",
+              "address": "South & West"
+            },
+            {
+              "name": "Vizianagram",
+              "city": "Vizianagaram",
+              "district": "Vizianagaram",
+              "code": "50000786",
+              "address": "South & West"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
