@@ -147,9 +147,18 @@ export const submitProof = async (req: AuthenticatedRequest, res: Response) => {
     let imageUrl: string;
 
     if (file) {
-      console.log(`Uploading proof image to Cloudinary for task ${id}...`);
-      imageUrl = await uploadImageToCloudinary(file.buffer, "task_proofs");
-      console.log(`Uploaded successfully: ${imageUrl}`);
+      try {
+        console.log(`Uploading proof image to Cloudinary for task ${id}...`);
+        imageUrl = await uploadImageToCloudinary(file.buffer, "task_proofs");
+        console.log(`Uploaded successfully: ${imageUrl}`);
+      } catch (cloudErr) {
+        console.error("Cloudinary upload failed, falling back to body imageUrl:", cloudErr);
+        if (bodyImageUrl) {
+          imageUrl = bodyImageUrl;
+        } else {
+          return res.status(400).json({ message: "Cloudinary upload failed and no fallback imageUrl provided" });
+        }
+      }
     } else if (bodyImageUrl) {
       imageUrl = bodyImageUrl;
     } else {
