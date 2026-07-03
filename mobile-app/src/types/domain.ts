@@ -164,6 +164,7 @@ export type Appliance = {
   purchaseCost: number;
   approvalStatus: string;
   pendingParts: string;
+  imageUrl?: string;
 };
 
 export type Approval = {

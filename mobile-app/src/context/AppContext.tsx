@@ -26,6 +26,19 @@ const saveSecure = async (key: string, value: string) => {
   }
 };
 
+const blobToDataUrl = (blob: any): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const Reader = (globalThis as any).FileReader;
+    if (!Reader) {
+      reject(new Error("FileReader is not available"));
+      return;
+    }
+    const reader = new Reader();
+    reader.onloadend = () => typeof reader.result === "string" ? resolve(reader.result) : reject(new Error("Image conversion failed"));
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+};
 const getSecure = async (key: string) => {
   try {
     if (Platform.OS === "web") {
@@ -284,7 +297,7 @@ interface AppContextValue {
   createTask: (data: Partial<Task>) => void;
   createComplaint: (data: Partial<Complaint>) => void;
   createUser: (name: string, role: RoleId, branchId: string | number) => void;
-  createAppliance: (data: Partial<Appliance>) => void;
+  createAppliance: (data: Partial<Appliance>) => Promise<boolean>;
   createExpense: (title: string, amount: number, vendor: string, desc: string) => void;
   createVisit: (branchId: string | number, date: string, purpose: string, agenda: string) => void;
   submitVisitReport: (id: string | number) => void;
@@ -376,12 +389,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const scopedAttendance = useMemo(() => attendanceLog.filter((entry) => {
     if (state.role === "rm" || state.role === "rrm") return true;
 
-    if (state.role === "am" || state.role === "branchManager") {
+    // Always include current user's own attendance records
+    if (String(entry.userId) === String(currentUser?.id)) return true;
+
+    if (state.role === "am" || state.role === "branchManager" || state.role === "aa") {
       return scopedUsers.some((u) => String(u.id) === String(entry.userId));
     }
 
-    if (String(entry.userId) === String(currentUser?.id)) return true;
-    const person = users.find((u) => String(u.id) === String(entry.userId)) || (String(entry.userId) === String(currentUser?.id) ? currentUser : undefined);
+    const person = users.find((u) => String(u.id) === String(entry.userId));
     return person && scopedBranchIds.includes(person.branchId);
   }), [attendanceLog, users, currentUser, scopedBranchIds, state.role, scopedUsers]);
 
@@ -436,8 +451,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
             return ["/rm/tasks"];
           case "complaints":
           case "issues":
-            if (isBmLike) return ["/bm/complaints", "/branches"];
-            return ["/complaints", "/branches"];
+            if (isBmLike) return ["/bm/complaints", "/branches", "/appliances"];
+            return ["/complaints", "/branches", "/appliances"];
           case "branch":
           case "branches":
             if (role === "lc") return ["/lc/dashboard"];
@@ -563,7 +578,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         const res = results[idx];
         if (!res || !res.data) return;
 
-        // â”€â”€ Role-specific bundle endpoints â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // Role-specific bundle endpoints
 
         if (endpoint === "/lc/dashboard") {
           const data = res.data;
@@ -638,45 +653,45 @@ export function AppProvider({ children }: { children: ReactNode }) {
         }
 
         if (endpoint === "/rm/analytics" || endpoint === "/am/analytics") {
-          // Analytics data is not stored in state directly â€” used for analytics screen.
+          // Analytics data is not stored in state directly - used for analytics screen.
           // Branches are re-fetched separately for now.
           return;
         }
 
-        // â”€â”€ Tasks endpoints â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // Tasks endpoints
         if (endpoint === "/lc/tasks" || endpoint === "/bm/tasks" || endpoint === "/rm/tasks" || endpoint === "/am/tasks") {
           const rawTasks = getTaskItems(res.data);
           setTasks(rawTasks.map(mapTask));
           return;
         }
 
-        // â”€â”€ Approvals endpoints â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // Approvals endpoints
         if (endpoint === "/bm/approvals") {
           const rawApprovals = res.data || [];
           setApprovals(rawApprovals.map((a: any) => ({ ...a, age: a.age || "", requestedBy: a.requestedById || a.requestedBy })));
           return;
         }
 
-        // â”€â”€ Complaints endpoints â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // Complaints endpoints
         if (endpoint === "/bm/complaints") {
           setComplaints((res.data || []).map(mapComplaint));
           return;
         }
 
-        // â”€â”€ Visits endpoints â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // Visits endpoints
         if (endpoint === "/bm/visits") {
           setVisits(res.data || []);
           return;
         }
 
-        // â”€â”€ LC attendance calendar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // LC attendance calendar
         if (endpoint === "/lc/attendance/calendar") {
           const calendar = res.data || [];
           setAttendanceLog(calendar.map(mapAttendance));
           return;
         }
 
-        // â”€â”€ Legacy / fallback generic endpoints â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // Legacy / fallback generic endpoints
         if (endpoint === "/branches") {
           setBranches(res.data);
         } else if (endpoint === "/users") {
@@ -1351,7 +1366,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const createAppliance = useCallback(async (data: Partial<Appliance>) => {
     try {
-      await apiClient.post("/appliances", {
+      const payload = {
         name: data.name,
         category: data.category,
         zone: data.zone,
@@ -1365,15 +1380,53 @@ export function AppProvider({ children }: { children: ReactNode }) {
         nextService: data.nextService,
         warranty: data.warranty,
         pendingParts: data.pendingParts,
-        branchId: data.branchId || currentUser.branchId
-      });
+        branchId: data.branchId || currentUser.branchId,
+      };
+
+      if (data.imageUrl) {
+        const isRemoteImage = /^https?:\/\//i.test(data.imageUrl);
+        const isDataImage = /^data:image\//i.test(data.imageUrl);
+
+        if (Platform.OS === "web" && !isRemoteImage && !isDataImage) {
+          const response = await fetch(data.imageUrl);
+          const blob = await response.blob();
+          const dataUrl = await blobToDataUrl(blob);
+          await apiClient.post("/appliances", { ...payload, imageUrl: dataUrl });
+        } else {
+          const formData = new FormData();
+          Object.entries(payload).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== "") {
+              formData.append(key, String(value));
+            }
+          });
+
+          if (isRemoteImage || isDataImage) {
+            formData.append("imageUrl", data.imageUrl);
+          } else {
+            formData.append("image", {
+              uri: data.imageUrl,
+              name: "appliance.jpg",
+              type: "image/jpeg",
+            } as any);
+          }
+
+          await apiClient.post("/appliances", formData);
+        }
+      } else {
+        await apiClient.post("/appliances", payload);
+      }
+
       addAuditEntry(`Appliance "${data.name}" added by ${currentUser.name}`, "Wrench", "#10B981");
       showToast("Appliance registered");
+      const appliancesRes = await apiClient.get("/appliances");
+      setAppliances(appliancesRes.data || []);
       await refreshData();
+      return true;
     } catch (e: any) {
       console.error(e);
       const errMsg = e.response?.data?.message || "Failed to add appliance";
       showToast(errMsg);
+      return false;
     }
   }, [currentUser, addAuditEntry, showToast, refreshData]);
 
@@ -1385,7 +1438,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         amount,
         note: vendor ? `${vendor} | ${desc}` : desc
       });
-      addAuditEntry(`Work order "${title}" raised for â‚¹${amount} by ${currentUser.name}`, "DollarSign", "#F59E0B");
+      addAuditEntry(`Work order "${title}" raised for Rs ${amount} by ${currentUser.name}`, "DollarSign", "#F59E0B");
       showToast("Budget approval request created");
       await refreshData();
     } catch (e: any) {
@@ -1470,9 +1523,43 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const updateAppliance = useCallback(async (id: string | number, data: Partial<Appliance>) => {
     try {
-      await apiClient.put(`/appliances/${id}`, data);
+      if (data.imageUrl) {
+        const isRemoteImage = /^https?:\/\//i.test(data.imageUrl);
+        const isDataImage = /^data:image\//i.test(data.imageUrl);
+
+        if (Platform.OS === "web" && !isRemoteImage && !isDataImage) {
+          const response = await fetch(data.imageUrl);
+          const blob = await response.blob();
+          const dataUrl = await blobToDataUrl(blob);
+          await apiClient.put(`/appliances/${id}`, { ...data, imageUrl: dataUrl });
+        } else {
+          const formData = new FormData();
+          Object.entries(data).forEach(([key, value]) => {
+            if (key !== "imageUrl" && value !== undefined && value !== null && value !== "") {
+              formData.append(key, String(value));
+            }
+          });
+
+          if (isRemoteImage || isDataImage) {
+            formData.append("imageUrl", data.imageUrl);
+          } else {
+            formData.append("image", {
+              uri: data.imageUrl,
+              name: "appliance.jpg",
+              type: "image/jpeg",
+            } as any);
+          }
+
+          await apiClient.put(`/appliances/${id}`, formData);
+        }
+      } else {
+        await apiClient.put(`/appliances/${id}`, data);
+      }
+
       addAuditEntry(`Appliance updated by ${currentUser.name}`, "Settings", "#6366F1");
       showToast("Appliance details updated");
+      const appliancesRes = await apiClient.get("/appliances");
+      setAppliances(appliancesRes.data || []);
       await refreshData();
     } catch (e: any) {
       console.error(e);
@@ -1556,7 +1643,3 @@ export function useApp(): AppContextValue {
   if (!ctx) throw new Error("useApp must be used within AppProvider");
   return ctx;
 }
-
-
-
-

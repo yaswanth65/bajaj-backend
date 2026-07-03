@@ -41,6 +41,10 @@ export function BranchManagerAttendanceScreen() {
   }
 
   const handleMarkAttendance = () => {
+    if (isPresent) {
+      showToast("Attendance already marked for today");
+      return;
+    }
     markAttendance({ remarks });
   };
 

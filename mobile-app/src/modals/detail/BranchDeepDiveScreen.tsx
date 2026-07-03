@@ -23,6 +23,12 @@ interface Props {
 
 type TabKey = "overview" | "staff" | "appliances" | "issues" | "info";
 
+const getRenderableImageUri = (value?: string | null) => {
+  const uri = typeof value === "string" ? value.trim() : "";
+  if (!uri || uri === "null" || uri.startsWith("blob:")) return null;
+  return /^(https?:|data:image\/|file:)/i.test(uri) ? uri : null;
+};
+
 const TABS: { key: TabKey; label: string }[] = [
   { key: "overview", label: "Overview" },
   { key: "staff", label: "Staff" },
@@ -245,7 +251,7 @@ export function BranchDeepDiveScreen({ branch, onBack }: Props) {
   }
 
   function renderAppliances() {
-    const applianceTasks = (id: string | number) => scopedTasks.filter(t => String(t.applianceId) === String(id) && t.proofUrl);
+    const applianceTasks = (id: string | number) => scopedTasks.filter(t => String(t.applianceId) === String(id) && getRenderableImageUri(t.proofUrl));
     const filteredApplianceTasks = (id: string | number) => {
       let tasks = applianceTasks(id);
       if (applianceFromDate) tasks = tasks.filter(t => String(t.deadline).slice(0, 10) >= applianceFromDate);
@@ -274,6 +280,7 @@ export function BranchDeepDiveScreen({ branch, onBack }: Props) {
           <Text style={{ fontSize: fontSize.sm, color: colors.textSecondary, textAlign: "center", paddingVertical: spacing["4xl"] }}>No appliances registered</Text>
         ) : branchAppliances.map((app) => {
           const relatedTasks = filteredApplianceTasks(app.id);
+          const appImageUri = getRenderableImageUri(app.imageUrl);
           return (
           <TouchableOpacity 
             key={app.id} 
@@ -293,6 +300,11 @@ export function BranchDeepDiveScreen({ branch, onBack }: Props) {
               </View>
               <Badge label={app.status} type={app.status} />
             </View>
+            {appImageUri ? (
+              <View style={{ marginBottom: spacing.md }}>
+                <Image source={{ uri: appImageUri }} style={{ width: "100%", height: 140, borderRadius: borderRadius.lg }} resizeMode="cover" />
+              </View>
+            ) : null}
             <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.md }}>
               <View style={{ flex: 1, minWidth: 60, backgroundColor: colors.slate50, borderRadius: borderRadius.lg, padding: spacing.sm, alignItems: "center" }}>
                 <Text style={{ fontSize: fontSize.xs, color: colors.textSecondary }}>Health</Text>
@@ -316,11 +328,15 @@ export function BranchDeepDiveScreen({ branch, onBack }: Props) {
               <View style={{ marginTop: spacing.md, borderTopWidth: 1, borderColor: colors.slate100, paddingTop: spacing.md }}>
                 <Text style={{ fontSize: fontSize.xs, color: colors.textSecondary, marginBottom: spacing.sm }}>Task Images ({relatedTasks.length})</Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: spacing.sm }}>
-                  {relatedTasks.map(rt => (
+                  {relatedTasks.map(rt => {
+                    const proofUri = getRenderableImageUri(rt.proofUrl);
+                    if (!proofUri) return null;
+                    return (
                     <TouchableOpacity key={rt.id} onPress={() => openTaskDetail(rt.id)} style={{ width: 80, height: 64, borderRadius: borderRadius.md, overflow: "hidden", borderWidth: 1, borderColor: colors.border }}>
-                      <Image source={{ uri: rt.proofUrl! }} style={{ width: "100%", height: "100%" }} resizeMode="cover" />
+                      <Image source={{ uri: proofUri }} style={{ width: "100%", height: "100%" }} resizeMode="cover" />
                     </TouchableOpacity>
-                  ))}
+                  );
+                  })}
                 </ScrollView>
               </View>
             ) : null}

@@ -2,6 +2,12 @@ import { Response } from "express";
 import { RoleId, ApplianceStatus } from "@prisma/client";
 import { AuthenticatedRequest } from "../middlewares/auth.middleware";
 import prisma from "../lib/prisma";
+import { uploadImageToCloudinary } from "../services/cloudinary.service";
+
+const isPersistentImageUrl = (value: any) => {
+  const url = typeof value === "string" ? value.trim() : "";
+  return /^(https?:|data:image\/)/i.test(url) ? url : null;
+};
 
 export const getAppliances = async (req: AuthenticatedRequest, res: Response) => {
   try {
@@ -15,7 +21,7 @@ export const getAppliances = async (req: AuthenticatedRequest, res: Response) =>
 
     if (userContext.role === RoleId.lc) {
       filters.branchId = userContext.branchId || "";
-    } else if (userContext.role === RoleId.branchManager) {
+    } else if (userContext.role === RoleId.branchManager || userContext.role === RoleId.aa) {
       if (branchId) {
         if (userContext.branchScope.includes(String(branchId))) {
           filters.branchId = String(branchId);
@@ -60,7 +66,8 @@ export const createAppliance = async (req: AuthenticatedRequest, res: Response) 
     const { 
       name, category, zone, brand, model, serial, 
       purchaseCost, amcVendor, purchaseDate, 
-      lastService, nextService, warranty, pendingParts 
+      lastService, nextService, warranty, pendingParts,
+      imageUrl
     } = req.body;
     
     if (!name || !category || !brand || !serial) {
@@ -71,6 +78,16 @@ export const createAppliance = async (req: AuthenticatedRequest, res: Response) 
     const existingApp = await prisma.appliance.findUnique({ where: { serial } });
     if (existingApp) {
       return res.status(400).json({ message: "An appliance with this serial number is already registered" });
+    }
+
+    const file = (req as any).file as Express.Multer.File | undefined;
+    let uploadedImageUrl = isPersistentImageUrl(imageUrl);
+    if (file) {
+      try {
+        uploadedImageUrl = await uploadImageToCloudinary(file.buffer, "appliance_photos");
+      } catch (uploadError) {
+        console.error("Appliance image upload failed; continuing without image:", uploadError);
+      }
     }
 
     if (purchaseCost !== undefined && purchaseCost !== null && purchaseCost !== "") {
@@ -118,6 +135,7 @@ export const createAppliance = async (req: AuthenticatedRequest, res: Response) 
           healthScore: 100,
           status: ApplianceStatus.Operational,
           approvalStatus: "Approved",
+          imageUrl: uploadedImageUrl,
         }
       });
 
@@ -157,8 +175,19 @@ export const updateAppliance = async (req: AuthenticatedRequest, res: Response) 
     const { 
       name, category, zone, brand, model, serial, 
       healthScore, status, purchaseDate, lastService, 
-      nextService, warranty, amcVendor, purchaseCost 
+      nextService, warranty, amcVendor, purchaseCost,
+      imageUrl
     } = req.body;
+
+    const file = (req as any).file as Express.Multer.File | undefined;
+    let uploadedImageUrl = imageUrl !== undefined ? isPersistentImageUrl(imageUrl) : undefined;
+    if (file) {
+      try {
+        uploadedImageUrl = await uploadImageToCloudinary(file.buffer, "appliance_photos");
+      } catch (uploadError) {
+        console.error("Appliance image upload failed; continuing without image:", uploadError);
+      }
+    }
 
     const appliance = await prisma.appliance.findUnique({ where: { id } });
     if (!appliance) {
@@ -209,6 +238,7 @@ export const updateAppliance = async (req: AuthenticatedRequest, res: Response) 
           warranty: warranty || undefined,
           amcVendor: amcVendor || undefined,
           purchaseCost: cost,
+          imageUrl: uploadedImageUrl,
         }
       });
 

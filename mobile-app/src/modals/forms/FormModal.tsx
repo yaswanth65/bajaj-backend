@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { Send, Plus, Wrench, DollarSign, Calendar, Zap, AlertCircle } from "lucide-react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Image } from "react-native";
+import { Send, Plus, Wrench, DollarSign, Calendar, Zap, AlertCircle, Camera, Image as LucideImage } from "lucide-react-native";
+import * as ImagePicker from "expo-image-picker";
 import { useApp } from "../../context/AppContext";
 import { colors, fontSize, spacing, borderRadius, bodyFont, fontWeight } from "../../theme/theme";
 import { RoleId } from "../../types/domain";
@@ -53,6 +54,7 @@ export function FormModal({ visible, onClose }: Props) {
   const [applianceNextService, setApplianceNextService] = useState("");
   const [applianceWarranty, setApplianceWarranty] = useState("");
   const [appliancePendingParts, setAppliancePendingParts] = useState("");
+  const [applianceImageUri, setApplianceImageUri] = useState("");
 
   const [expenseTitle, setExpenseTitle] = useState("");
   const [expenseAmount, setExpenseAmount] = useState("");
@@ -73,6 +75,7 @@ export function FormModal({ visible, onClose }: Props) {
     setApplianceName(""); setApplianceCategory(""); setApplianceZone(""); setApplianceBrand(""); setApplianceModel("");
     setApplianceSerial(""); setAppliancePurchaseCost(""); setApplianceAmcVendor(""); setAppliancePurchaseDate("");
     setApplianceLastService(""); setApplianceNextService(""); setApplianceWarranty(""); setAppliancePendingParts("");
+    setApplianceImageUri("");
     setExpenseTitle(""); setExpenseAmount(""); setExpenseVendor(""); setExpenseDesc("");
     setVisitBranch(String(branches[0]?.id || "")); setVisitDate(""); setVisitPurpose(""); setVisitAgenda("");
     setUserName(""); setUserRole("lc"); setUserBranch(String(branches[0]?.id || ""));
@@ -151,7 +154,7 @@ export function FormModal({ visible, onClose }: Props) {
     </View>
   );
 
-  const submitBtn = (label: string, onPress: () => void) => (
+  const submitBtn = (label: string, onPress: () => void | Promise<void>) => (
     <TouchableOpacity onPress={onPress} style={{ backgroundColor: colors.slate900, borderRadius: borderRadius.md, height: 48, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: spacing.sm }}>
       <Send size={14} color={colors.white} strokeWidth={2} />
       <Text style={{ fontSize: fontSize.sm, fontFamily: bodyFont, fontWeight: fontWeight.semibold, color: colors.white }}>{label}</Text>
@@ -189,7 +192,7 @@ export function FormModal({ visible, onClose }: Props) {
       title: "Raise complaint",
       subtitle: "Report an issue with branch infrastructure or assets.",
       render: () => {
-        const handleSubmit = () => {
+        const handleSubmit = async () => {
           const result = validate(complaintSchema, { priority, description: desc });
           if (!result.success) { setErrors(result.errors); return; }
           createComplaint({ priority: priority as any, description: desc });
@@ -198,7 +201,7 @@ export function FormModal({ visible, onClose }: Props) {
         return (
           <View style={{ gap: spacing.lg }}>
             {selectOptions("Priority", ["Low", "Medium", "High", "Critical"], priority, setPriority, "priority")}
-            {textarea("Describe issue — location, visible damage, and urgency", desc, setDesc, "description")}
+            {textarea("Describe issue - location, visible damage, and urgency", desc, setDesc, "description")}
             {submitBtn("Submit complaint", handleSubmit)}
           </View>
         );
@@ -208,7 +211,7 @@ export function FormModal({ visible, onClose }: Props) {
       title: "Check form",
       subtitle: "Create and assign weekly checks to any role with proof requirements.",
       render: () => {
-        const handleSubmit = () => {
+        const handleSubmit = async () => {
           const result = validate(taskSchema, { title: taskTitle, audience: taskAudience, schedule: taskSchedule, zone: taskZone, deadline: taskDeadline, priority: taskPriority, notes: taskNotes });
           if (!result.success) { setErrors(result.errors); return; }
           createTask({ title: taskTitle, audience: taskAudience as RoleId, schedule: "Weekly", zone: taskZone, deadline: taskDeadline, priority: taskPriority as any, proofRequired: taskProofRule === "true", notes: taskNotes, branchId: taskBranch });
@@ -255,7 +258,7 @@ export function FormModal({ visible, onClose }: Props) {
       title: "Add appliance",
       subtitle: "Capture category, zone, serial, brand, and service details.",
       render: () => {
-        const handleSubmit = () => {
+        const handleSubmit = async () => {
           const costVal = appliancePurchaseCost.trim() ? Number(appliancePurchaseCost) : undefined;
           const result = validate(applianceSchema, {
             name: applianceName,
@@ -267,7 +270,7 @@ export function FormModal({ visible, onClose }: Props) {
             purchaseCost: costVal
           });
           if (!result.success) { setErrors(result.errors); return; }
-          createAppliance({
+          const created = await createAppliance({
             name: applianceName,
             category: applianceCategory,
             zone: applianceZone,
@@ -280,9 +283,10 @@ export function FormModal({ visible, onClose }: Props) {
             lastService: applianceLastService,
             nextService: applianceNextService,
             warranty: applianceWarranty,
-            pendingParts: appliancePendingParts
+            pendingParts: appliancePendingParts,
+            imageUrl: applianceImageUri || undefined,
           });
-          handleClose();
+          if (created) handleClose();
         };
 
         const renderDatePickerField = (label: string, val: string, setVal: (v: string) => void) => (
@@ -320,11 +324,51 @@ export function FormModal({ visible, onClose }: Props) {
 
             <View style={{ flexDirection: "row", gap: spacing.lg }}>
               {renderDatePickerField("Next Service", applianceNextService, setApplianceNextService)}
-              <View style={{ flex: 1 }}>{input("Purchase Cost (₹)", appliancePurchaseCost, setAppliancePurchaseCost, { keyboardType: "numeric" }, "purchaseCost")}</View>
+              <View style={{ flex: 1 }}>{input("Purchase Cost (Rs)", appliancePurchaseCost, setAppliancePurchaseCost, { keyboardType: "numeric" }, "purchaseCost")}</View>
             </View>
 
             {input("AMC Vendor Name", applianceAmcVendor, setApplianceAmcVendor)}
             {input("Pending Parts Needed", appliancePendingParts, setAppliancePendingParts)}
+
+            {/* Appliance Photo Upload */}
+            <View>
+              <Text style={{ fontSize: fontSize.xs, fontFamily: bodyFont, fontWeight: fontWeight.semibold, color: colors.slate400, textTransform: "uppercase", letterSpacing: 1.2, marginBottom: spacing.sm }}>Appliance Photo</Text>
+              {applianceImageUri ? (
+                <View style={{ gap: spacing.sm }}>
+                  <Image source={{ uri: applianceImageUri }} style={{ width: "100%", height: 180, borderRadius: borderRadius.lg }} resizeMode="cover" />
+                  <TouchableOpacity onPress={() => setApplianceImageUri("")} style={{ alignSelf: "flex-start", paddingHorizontal: spacing.lg, paddingVertical: spacing.sm, backgroundColor: colors.rose50, borderRadius: borderRadius.full }}>
+                    <Text style={{ fontSize: fontSize.xs, color: colors.rose700 }}>Remove photo</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <View style={{ flexDirection: "row", gap: spacing.md }}>
+                  <TouchableOpacity
+                    onPress={async () => {
+                      const perm = await ImagePicker.requestCameraPermissionsAsync();
+                      if (!perm.granted) { showToast("Camera permission is required"); return; }
+                      const result = await ImagePicker.launchCameraAsync({ mediaTypes: ["images"], allowsEditing: true, quality: 0.8 });
+                      if (!result.canceled && result.assets?.length) setApplianceImageUri(result.assets[0].uri);
+                    }}
+                    style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: spacing.sm, paddingVertical: spacing.lg, backgroundColor: colors.brand + "10", borderRadius: borderRadius.lg, borderWidth: 1, borderColor: colors.brand + "30", borderStyle: "dashed" }}
+                  >
+                    <Camera size={18} color={colors.brand} strokeWidth={2} />
+                    <Text style={{ fontSize: fontSize.sm, color: colors.brand, fontWeight: "500" }}>Take Photo</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={async () => {
+                      const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                      if (!perm.granted) { showToast("Gallery permission is required"); return; }
+                      const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ["images"], allowsEditing: true, quality: 0.8 });
+                      if (!result.canceled && result.assets?.length) setApplianceImageUri(result.assets[0].uri);
+                    }}
+                    style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: spacing.sm, paddingVertical: spacing.lg, backgroundColor: colors.slate50, borderRadius: borderRadius.lg, borderWidth: 1, borderColor: colors.border, borderStyle: "dashed" }}
+                  >
+                    <LucideImage size={18} color={colors.slate600} strokeWidth={2} />
+                    <Text style={{ fontSize: fontSize.sm, color: colors.slate600, fontWeight: "500" }}>Gallery</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
 
             {submitBtn("Add appliance", handleSubmit)}
           </View>
@@ -335,7 +379,7 @@ export function FormModal({ visible, onClose }: Props) {
       title: "Create work order",
       subtitle: "Create work order with vendor and urgency details.",
       render: () => {
-        const handleSubmit = () => {
+        const handleSubmit = async () => {
           const result = validate(expenseSchema, { title: expenseTitle, amount: Number(expenseAmount) || 0, vendor: expenseVendor, description: expenseDesc });
           if (!result.success) { setErrors(result.errors); return; }
           createExpense(expenseTitle, Number(expenseAmount) || 0, expenseVendor, expenseDesc);
@@ -358,7 +402,7 @@ export function FormModal({ visible, onClose }: Props) {
       title: "Schedule visit",
       subtitle: "Create visit with branch, agenda and expected outcome.",
       render: () => {
-        const handleSubmit = () => {
+        const handleSubmit = async () => {
           const result = validate(visitSchema, { branchId: visitBranch, date: visitDate, purpose: visitPurpose, agenda: visitAgenda });
           if (!result.success) { setErrors(result.errors); return; }
           createVisit(visitBranch, visitDate, visitPurpose, visitAgenda);
@@ -393,7 +437,7 @@ export function FormModal({ visible, onClose }: Props) {
       title: "Create user",
       subtitle: "Add a new user to the regional directory.",
       render: () => {
-        const handleSubmit = () => {
+        const handleSubmit = async () => {
           const result = validate(userSchema, { name: userName, role: userRole });
           if (!result.success) { setErrors(result.errors); return; }
           createUser(userName, userRole, userBranch);

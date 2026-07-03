@@ -39,7 +39,7 @@ function TouchableChip({ label, isSelected, onPress }: { label: string; isSelect
 }
 
 export function RmMonitoringScreen() {
-  const { state, setTab, scopedBranches, scopedTasks, scopedUsers, markTaskDone, revokeTask, openTaskDetail } = useApp();
+  const { state, setTab, scopedBranches, scopedTasks, scopedUsers } = useApp();
   const activeTab = state.tabs.managerMonitoring === "attendance" ? "attendance" : "weekly";
 
   const [selectedRegion, setSelectedRegion] = useState("");
@@ -336,16 +336,6 @@ export function RmMonitoringScreen() {
                         <TaskCard
                           key={task.id}
                           task={task}
-                          actions={
-                            task.status === "Pending" || task.status === "In Progress"
-                              ? [
-                                { label: "Mark Complete", onPress: () => markTaskDone(task.id), primary: true },
-                                { label: "Revoke", onPress: () => revokeTask(task.id) },
-                              ]
-                              : task.status === "Revoked"
-                                ? [{ label: "Review", onPress: () => openTaskDetail(task.id) }]
-                                : undefined
-                          }
                         />
                       ))}
 

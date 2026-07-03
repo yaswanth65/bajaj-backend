@@ -176,6 +176,7 @@ model Appliance {
   purchaseCost       Float           @default(0.0)
   approvalStatus     String          @default("Approved")
   pendingParts       String          @default("None")
+  imageUrl           String?         // Appliance photo URL
   
   // Track checks generated for this appliance
   checks             Check[]

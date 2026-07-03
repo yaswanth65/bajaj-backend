@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(securityHeaders);
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "15mb" }));
 
 // Main API routes
 app.use("/api", mainRouter);
@@ -47,9 +47,9 @@ app.get("/health", async (req, res) => {
 async function checkDatabaseConnection() {
   try {
     await prisma.$connect();
-    console.log("✅ Database connected successfully");
+    console.log("Database connected successfully");
   } catch (error) {
-    console.error("❌ Database connection failed:", error);
+    console.error("Database connection failed:", error);
     process.exit(1); // Stop server if DB is critical
   }
 }

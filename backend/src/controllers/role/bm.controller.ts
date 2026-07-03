@@ -336,6 +336,7 @@ export const bmBranches = async (req: AuthenticatedRequest, res: Response) => {
           amcVendor: true,
           nextService: true,
           pendingParts: true,
+          imageUrl: true,
         },
         orderBy: { name: "asc" },
       }),
