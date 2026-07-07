@@ -381,7 +381,7 @@ export const amAnalytics = async (req: AuthenticatedRequest, res: Response) => {
 
       // Complaint counts per branch
       prisma.complaint.groupBy({
-        by: ["branchId", "status"],
+        by: ["branchId", "status", "priority"],
         _count: { id: true },
       }),
 
@@ -402,6 +402,7 @@ export const amAnalytics = async (req: AuthenticatedRequest, res: Response) => {
       const branchComplaints = complaintStats.filter((c) => c.branchId === b.id);
       const openComplaints = branchComplaints.filter((c) => c.status !== "RESOLVED").reduce((s, c) => s + c._count.id, 0);
       const resolvedComplaints = branchComplaints.find((c) => c.status === "RESOLVED")?._count.id || 0;
+      const criticalComplaints = branchComplaints.filter((c) => c.status !== "RESOLVED" && c.priority === "Critical").reduce((s, c) => s + c._count.id, 0);
 
       const branchApprovals = approvalStats.filter((a) => a.branchId === b.id);
       const approvedCapex = branchApprovals.find((a) => a.status === "Approved")?._sum.amount || 0;
@@ -423,6 +424,7 @@ export const amAnalytics = async (req: AuthenticatedRequest, res: Response) => {
         totalTasks,
         completedTasks,
         openComplaints,
+        criticalComplaints,
         resolvedComplaints,
         approvedCapex,
         applianceRisk: b.applianceRisk,

@@ -352,7 +352,7 @@ export const rmAnalytics = async (req: AuthenticatedRequest, res: Response) => {
 
       // Complaint counts per branch
       prisma.complaint.groupBy({
-        by: ["branchId", "status"],
+        by: ["branchId", "status", "priority"],
         _count: { id: true },
       }),
 
@@ -373,6 +373,7 @@ export const rmAnalytics = async (req: AuthenticatedRequest, res: Response) => {
       const branchComplaints = complaintStats.filter((c) => c.branchId === b.id);
       const openComplaints = branchComplaints.filter((c) => c.status !== "RESOLVED").reduce((s, c) => s + c._count.id, 0);
       const resolvedComplaints = branchComplaints.find((c) => c.status === "RESOLVED")?._count.id || 0;
+      const criticalComplaints = branchComplaints.filter((c) => c.status !== "RESOLVED" && c.priority === "Critical").reduce((s, c) => s + c._count.id, 0);
 
       const branchApprovals = approvalStats.filter((a) => a.branchId === b.id);
       const approvedCapex = branchApprovals.find((a) => a.status === "Approved")?._sum.amount || 0;
@@ -394,6 +395,7 @@ export const rmAnalytics = async (req: AuthenticatedRequest, res: Response) => {
         totalTasks,
         completedTasks,
         openComplaints,
+        criticalComplaints,
         resolvedComplaints,
         approvedCapex,
         applianceRisk: b.applianceRisk,
@@ -401,7 +403,77 @@ export const rmAnalytics = async (req: AuthenticatedRequest, res: Response) => {
       };
     });
 
-    return res.status(200).json({ analytics });
+    // 1. Filter by region if requested
+    const region = req.query.region as string;
+    let filteredAnalytics = analytics;
+    if (region && region !== "all") {
+      filteredAnalytics = analytics.filter(a => {
+        let city = a.city || "";
+        if (city.toLowerCase() === "chhatisgarh") city = "Chhattisgarh";
+        return city === region;
+      });
+    }
+
+    // 2. Compute aggregate region metrics
+    const totalTasks = filteredAnalytics.reduce((s, a) => s + a.totalTasks, 0);
+    const completedTasks = filteredAnalytics.reduce((s, a) => s + a.completedTasks, 0);
+    const regionMetrics = {
+      taskCompletionRate: totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0,
+      openComplaints: filteredAnalytics.reduce((s, a) => s + a.openComplaints, 0),
+      criticalComplaints: filteredAnalytics.reduce((s, a) => s + a.criticalComplaints, 0),
+      budgetBurnPct: filteredAnalytics.length > 0 ? Math.round((filteredAnalytics.reduce((s, a) => s + a.usedBudget, 0) / filteredAnalytics.reduce((s, a) => s + a.monthlyBudget, 0)) * 100) : 0,
+      avgSla: filteredAnalytics.length > 0 ? Math.round(filteredAnalytics.reduce((s, a) => s + a.sla, 0) / filteredAnalytics.length) : 0,
+    };
+
+    // 3. Generate mock 6-month historical trends
+    // In production, this would query historical snapshots or group by month.
+    const currentMonth = new Date().getMonth();
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const trends = {
+      labels: Array.from({ length: 6 }).map((_, i) => months[(currentMonth - 5 + i + 12) % 12]),
+      sla: [82, 85, 84, regionMetrics.avgSla - 2, regionMetrics.avgSla - 1, regionMetrics.avgSla || 90], // Slight variations
+      tasks: [75, 78, 80, regionMetrics.taskCompletionRate - 3, regionMetrics.taskCompletionRate - 1, regionMetrics.taskCompletionRate || 85]
+    };
+
+    // 4. Sort leaderboard (by SLA desc) and alerts (by Critical Alerts/Open Issues desc)
+    const leaderboard = [...filteredAnalytics].sort((a, b) => b.sla - a.sla);
+    const alerts = [...filteredAnalytics].filter(a => a.openComplaints > 0 || a.criticalAlerts > 0).sort((a, b) => {
+      if (b.criticalAlerts !== a.criticalAlerts) return b.criticalAlerts - a.criticalAlerts;
+      return b.openComplaints - a.openComplaints;
+    });
+
+    // 5. Fetch users for the filtered branches
+    const filteredBranchIds = filteredAnalytics.map(b => b.branchId);
+    const regionUsers = await prisma.user.findMany({
+      where: {
+        branchId: { in: filteredBranchIds }
+      },
+      select: {
+        id: true,
+        name: true,
+        role: true,
+        branchId: true,
+        attendancePct: true,
+        tasksClosed: true,
+        proofRate: true,
+        rating: true,
+      }
+    });
+
+    // Map branch names to users
+    const usersWithBranch = regionUsers.map(u => ({
+      ...u,
+      branchName: filteredAnalytics.find(b => b.branchId === u.branchId)?.branchName || "Unknown"
+    }));
+
+    return res.status(200).json({ 
+      analytics: filteredAnalytics,
+      regionMetrics,
+      trends,
+      leaderboard,
+      alerts,
+      users: usersWithBranch
+    });
   } catch (error: any) {
     console.error("RM analytics error:", error);
     return res.status(500).json({ message: "Server error", error: process.env.NODE_ENV === "development" ? error.message : undefined });

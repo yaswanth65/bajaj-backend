@@ -365,8 +365,8 @@ export const closeComplaint = async (req: AuthenticatedRequest, res: Response) =
 export const resolveComplaint = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const userContext = req.user;
-    if (!userContext || userContext.role !== RoleId.rm) {
-      return res.status(403).json({ message: "Forbidden: Only RM can resolve complaints via this endpoint." });
+    if (!userContext) {
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
     const { id } = req.params;
@@ -378,6 +378,10 @@ export const resolveComplaint = async (req: AuthenticatedRequest, res: Response)
     });
 
     if (!complaint) return res.status(404).json({ message: "Complaint not found" });
+
+    if (userContext.role !== RoleId.rm && complaint.raisedById !== userContext.id) {
+      return res.status(403).json({ message: "Forbidden: Only RM or the person who raised the complaint can resolve it." });
+    }
 
     const result = await prisma.$transaction(async (tx) => {
       const updated = await tx.complaint.update({
