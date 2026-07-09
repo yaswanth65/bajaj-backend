@@ -226,6 +226,7 @@ export const bmTasks = async (req: AuthenticatedRequest, res: Response) => {
       where: { branchId: { in: scopedBranchIds }, schedule: "Weekly" },
       select: {
         id: true,
+        title: true,
         status: true,
         schedule: true,
         zone: true,
@@ -239,6 +240,7 @@ export const bmTasks = async (req: AuthenticatedRequest, res: Response) => {
         checklistDone: true,
         checklistTotal: true,
         notes: true,
+        escalation: true,
         proofRequired: true,
         proofLabel: true,
         redoReason: true,

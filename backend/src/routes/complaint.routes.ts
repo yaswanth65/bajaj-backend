@@ -1,4 +1,5 @@
 import { Router } from "express";
+import multer from "multer";
 import {
   getComplaints,
   getComplaintDetail,
@@ -15,6 +16,10 @@ import {
 import { authenticateToken } from "../middlewares/auth.middleware";
 
 const router = Router();
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 } // limit 10MB
+});
 
 // Dashboard stats (must be before /:id to avoid route conflict)
 router.get("/dashboard/stats", authenticateToken, getComplaintDashboardStats);
@@ -22,7 +27,7 @@ router.get("/dashboard/stats", authenticateToken, getComplaintDashboardStats);
 // CRUD
 router.get("/", authenticateToken, getComplaints);
 router.get("/:id", authenticateToken, getComplaintDetail);
-router.post("/", authenticateToken, createComplaint);
+router.post("/", authenticateToken, upload.array("images", 5), createComplaint);
 
 // Actions
 router.patch("/:id/status", authenticateToken, updateComplaintStatus);

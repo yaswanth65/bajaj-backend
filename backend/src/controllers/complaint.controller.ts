@@ -6,6 +6,7 @@ import { recalcBranchStats } from "../lib/stats";
 import prisma from "../lib/prisma";
 import { generateWorkOrderPDF, generateCompletionPDF } from "../services/pdf.service";
 import { uploadPdfToCloudinary } from "../services/upload.service";
+import { uploadImageToCloudinary } from "../services/cloudinary.service";
 
 /* ── helpers ─────────────────────────────────────────────────────────────── */
 
@@ -132,6 +133,33 @@ export const createComplaint = async (req: AuthenticatedRequest, res: Response) 
     const { assetId, priority, description, attachments, vendorName, vendorEmail } = req.body;
 
     if (!assetId) return res.status(400).json({ message: "Asset/Appliance selection is required" });
+
+    // Handle uploaded file attachments if any
+    const files = req.files as Express.Multer.File[];
+    let uploadedUrls: string[] = [];
+    if (files && files.length > 0) {
+      for (const file of files) {
+        try {
+          const url = await uploadImageToCloudinary(file.buffer, "complaint_photos");
+          uploadedUrls.push(url);
+        } catch (err) {
+          console.error("Cloudinary upload failed for a complaint attachment:", err);
+        }
+      }
+    }
+
+    let bodyAttachments: string[] = [];
+    if (attachments) {
+      try {
+        bodyAttachments = typeof attachments === "string" 
+          ? JSON.parse(attachments) 
+          : attachments;
+      } catch (e) {
+        bodyAttachments = [];
+      }
+    }
+
+    const finalAttachmentUrls = [...bodyAttachments, ...uploadedUrls];
     if (!description || description.trim().length < 10) {
       return res.status(400).json({ message: "Description must be at least 10 characters" });
     }
@@ -169,7 +197,7 @@ export const createComplaint = async (req: AuthenticatedRequest, res: Response) 
           vendorId: vendorName || asset.amcVendor || "Not assigned",
           vendorEmail: vendorEmail || asset.vendorEmail || "",
           description: description.trim(),
-          attachmentUrls: attachments || [],
+          attachmentUrls: finalAttachmentUrls,
         },
         include: {
           raisedBy: { select: { id: true, name: true } },
