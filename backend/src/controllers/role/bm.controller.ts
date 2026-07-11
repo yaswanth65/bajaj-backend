@@ -223,7 +223,7 @@ export const bmTasks = async (req: AuthenticatedRequest, res: Response) => {
     const scopedBranchIds = user.branchScope || [];
 
     const checks = await prisma.check.findMany({
-      where: { branchId: { in: scopedBranchIds }, schedule: "Weekly" },
+      where: { branchId: { in: scopedBranchIds } },
       select: {
         id: true,
         title: true,

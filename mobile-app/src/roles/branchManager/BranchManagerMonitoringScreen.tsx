@@ -37,7 +37,7 @@ function TouchableChip({ label, isSelected, onPress }: { label: string; isSelect
 
 export function BranchManagerMonitoringScreen() {
   const { state, setTab, scopedBranches, scopedTasks, markTaskDone, revokeTask, openTaskDetail } = useApp();
-  const activeTab = state.tabs.managerMonitoring === "attendance" ? "attendance" : "weekly";
+  const activeTab = state.tabs.managerMonitoring === "tasks" ? "tasks" : "weekly";
 
   const [selectedRegion, setSelectedRegion] = useState("");
   const [selectedBranchId, setSelectedBranchId] = useState<string | number>("");
@@ -96,6 +96,7 @@ export function BranchManagerMonitoringScreen() {
     return scopedTasks.filter((t) => {
       if (!activeBranchIds.includes(t.branchId)) return false;
       if (activeTab === "weekly" && t.schedule !== "Weekly") return false;
+      if (activeTab === "tasks" && t.schedule === "Weekly") return false;
       if (statusFilter !== "all" && t.status !== statusFilter) return false;
       const taskDate = t.deadline ? String(t.deadline).slice(0, 10) : "";
       if (fromDate && taskDate < fromDate) return false;
@@ -163,6 +164,7 @@ export function BranchManagerMonitoringScreen() {
             <SegmentedControl
               tabs={[
                 { label: "Weekly Checks", value: "weekly" },
+                { label: "One-Time Tasks", value: "tasks" },
               ]}
               activeKey={activeTab}
               onChange={(v) => setTab("managerMonitoring", v)}
