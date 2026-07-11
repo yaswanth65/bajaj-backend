@@ -39,7 +39,7 @@ import { RmDashboardScreen } from "../roles/rm/RmDashboardScreen";
 import { RmAnalyticsScreen } from "../roles/rm/RmAnalyticsScreen";
 import { UserManagementScreen } from "../roles/rm/UserManagementScreen";
 import { RmUsersScreen } from "../roles/rm/RmUsersScreen";
-import { RmNotificationsScreen } from "../roles/rm/RmNotificationsScreen";
+import { RmAlertsScreen } from "../roles/rm/RmAlertsScreen";
 import { RmProfileScreen } from "../roles/rm/RmProfileScreen";
 import { RmAttendanceScreen } from "../roles/rm/RmAttendanceScreen";
 import { RmFinanceScreen } from "../roles/rm/RmFinanceScreen";
@@ -85,7 +85,7 @@ registerScreen("rm", "complaints", RmComplaintCommandCenter);
 registerScreen("rm", "analytics", RmAnalyticsScreen);
 registerScreen("rm", "users", UserManagementScreen);
 registerScreen("rm", "attendance", RmAttendanceScreen);
-registerScreen("rm", "notifications", RmNotificationsScreen);
+registerScreen("rm", "notifications", RmAlertsScreen);
 registerScreen("rm", "profile", RmProfileScreen);
 registerScreen("rm", "branches", BranchManagerBranchesScreen);
 
@@ -100,7 +100,7 @@ registerScreen("am", "complaints", BranchManagerComplaintsScreen);
 registerScreen("am", "analytics", RmAnalyticsScreen);
 registerScreen("am", "users", RmUsersScreen);
 registerScreen("am", "attendance", RmAttendanceScreen);
-registerScreen("am", "notifications", RmNotificationsScreen);
+registerScreen("am", "notifications", RmAlertsScreen);
 registerScreen("am", "profile", RmProfileScreen);
 
 // RRM mapping
@@ -113,7 +113,7 @@ registerScreen("rrm", "complaints", RmComplaintCommandCenter);
 registerScreen("rrm", "analytics", RmAnalyticsScreen);
 registerScreen("rrm", "users", UserManagementScreen);
 registerScreen("rrm", "attendance", RmAttendanceScreen);
-registerScreen("rrm", "notifications", RmNotificationsScreen);
+registerScreen("rrm", "notifications", RmAlertsScreen);
 registerScreen("rrm", "profile", RmProfileScreen);
 function getScreen(roleId: string, pageId: string): React.ComponentType {
   return screenRegistry[roleId + "_" + pageId] || PlaceholderScreen;
