@@ -667,8 +667,14 @@ export const rmOperationalAlerts = async (req: AuthenticatedRequest, res: Respon
     ]);
 
     const alerts: any[] = [];
-    const now = new Date();
-    const isToday = queryDateStr === now.toISOString().slice(0, 10);
+    const getIndiaTime = () => {
+      const d = new Date();
+      const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+      return new Date(utc + (3600000 * 5.5));
+    };
+
+    const nowIndia = getIndiaTime();
+    const isToday = queryDateStr === nowIndia.toISOString().slice(0, 10);
 
     const getShiftStartMinutes = (window: string): number => {
       try {
@@ -680,7 +686,7 @@ export const rmOperationalAlerts = async (req: AuthenticatedRequest, res: Respon
       }
     };
 
-    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+    const currentMinutes = nowIndia.getHours() * 60 + nowIndia.getMinutes();
 
     // ── 1. Branch Not Opened Yet ──
     for (const branch of branches) {

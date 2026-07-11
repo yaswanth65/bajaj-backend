@@ -106,6 +106,7 @@ export function RmAlertsScreen() {
 
   const filtered = scopedNotifications.filter((item) => {
     if (filter !== "all" && item.priority.toLowerCase() !== filter) return false;
+    if (selectedRegion === "all" && selectedBranchId === "all") return true;
     if (selectedBranchId === "all") {
       const regionBranchIds = branchesInRegion.map(b => b.id);
       if (!regionBranchIds.includes(item.branchId)) return false;
@@ -117,6 +118,7 @@ export function RmAlertsScreen() {
 
   const filteredOperational = useMemo(() => {
     return operationalAlerts.filter((item) => {
+      if (selectedRegion === "all" && selectedBranchId === "all") return true;
       if (selectedBranchId === "all") {
         const regionBranchIds = branchesInRegion.map(b => b.id);
         if (!regionBranchIds.includes(item.branchId)) return false;
@@ -125,7 +127,7 @@ export function RmAlertsScreen() {
       }
       return true;
     });
-  }, [operationalAlerts, selectedBranchId, branchesInRegion]);
+  }, [operationalAlerts, selectedRegion, selectedBranchId, branchesInRegion]);
 
   const branchOpeningAlerts = useMemo(() => filteredOperational.filter(a => a.type === "branch_not_opened"), [filteredOperational]);
   const missingAttendanceAlerts = useMemo(() => filteredOperational.filter(a => a.type === "missing_attendance"), [filteredOperational]);
