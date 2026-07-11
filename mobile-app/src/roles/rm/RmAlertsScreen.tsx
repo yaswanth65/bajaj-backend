@@ -57,6 +57,7 @@ export function RmAlertsScreen() {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
   const [selectedRegion, setSelectedRegion] = useState("all");
   const [selectedBranchId, setSelectedBranchId] = useState<string | number>("all");
+  const [selectedExceptionSection, setSelectedExceptionSection] = useState<string | null>(null);
 
   useEffect(() => {
     setSelectedBranchId("all");
@@ -385,50 +386,169 @@ export function RmAlertsScreen() {
                 </View>
               </Card>
             ) : (
-              <>
-                {/* 1. Branch Openings Section */}
-                <SubsectionHeader title="Branch Openings Status" count={branchOpeningAlerts.length} icon={Building} color={colors.brand} />
-                {branchOpeningAlerts.length > 0 ? (
-                  branchOpeningAlerts.map(renderAlertCard)
-                ) : (
-                  <Card variant="glass" style={{ padding: spacing.lg, borderLeftWidth: 4, borderLeftColor: colors.success }}>
-                    <Text style={{ fontSize: fontSize.sm, color: colors.success, fontWeight: "600" }}>All branches opened on schedule.</Text>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.lg, marginVertical: spacing.md }}>
+                {/* 1. Branch Openings */}
+                <TouchableOpacity 
+                  onPress={() => setSelectedExceptionSection("branch_not_opened")}
+                  style={{ flex: 1, minWidth: 250 }}
+                >
+                  <Card variant="glass" style={{ padding: spacing.xl, borderLeftWidth: 4, borderLeftColor: colors.brand, height: 160, justifyContent: "space-between" }}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                      <View style={{ width: 44, height: 44, borderRadius: borderRadius.lg, backgroundColor: colors.sky50, alignItems: "center", justifyContent: "center" }}>
+                        <Building size={20} color={colors.brand} />
+                      </View>
+                      <Badge label="Operational" type="Info" />
+                    </View>
+                    <View style={{ marginTop: spacing.md }}>
+                      <Text style={{ fontSize: fontSize["3xl"], fontWeight: "800", color: colors.text }}>{branchOpeningAlerts.length}</Text>
+                      <Text style={{ fontSize: fontSize.sm, fontWeight: "600", color: colors.textSecondary }}>Branches Unopened</Text>
+                      <Text style={{ fontSize: fontSize.xs, color: colors.slate400, marginTop: 4 }}>Click to view all unopened branches</Text>
+                    </View>
                   </Card>
-                )}
+                </TouchableOpacity>
 
-                {/* 2. Staff Attendance Exceptions */}
-                <SubsectionHeader title="Staff Attendance Exceptions" count={missingAttendanceAlerts.length} icon={Users} color={colors.warning} />
-                {missingAttendanceAlerts.length > 0 ? (
-                  missingAttendanceAlerts.map(renderAlertCard)
-                ) : (
-                  <Card variant="glass" style={{ padding: spacing.lg, borderLeftWidth: 4, borderLeftColor: colors.success }}>
-                    <Text style={{ fontSize: fontSize.sm, color: colors.success, fontWeight: "600" }}>All staff attendance accounted for.</Text>
+                {/* 2. Staff Attendance */}
+                <TouchableOpacity 
+                  onPress={() => setSelectedExceptionSection("missing_attendance")}
+                  style={{ flex: 1, minWidth: 250 }}
+                >
+                  <Card variant="glass" style={{ padding: spacing.xl, borderLeftWidth: 4, borderLeftColor: colors.warning, height: 160, justifyContent: "space-between" }}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                      <View style={{ width: 44, height: 44, borderRadius: borderRadius.lg, backgroundColor: colors.amber50, alignItems: "center", justifyContent: "center" }}>
+                        <Users size={20} color={colors.warning} />
+                      </View>
+                      <Badge label="Attendance" type="Warning" />
+                    </View>
+                    <View style={{ marginTop: spacing.md }}>
+                      <Text style={{ fontSize: fontSize["3xl"], fontWeight: "800", color: colors.text }}>{missingAttendanceAlerts.length}</Text>
+                      <Text style={{ fontSize: fontSize.sm, fontWeight: "600", color: colors.textSecondary }}>Staff Attendance Missing</Text>
+                      <Text style={{ fontSize: fontSize.xs, color: colors.slate400, marginTop: 4 }}>Click to view missing check-ins</Text>
+                    </View>
                   </Card>
-                )}
+                </TouchableOpacity>
 
                 {/* 3. SLA Breach Complaints */}
-                <SubsectionHeader title="SLA Breach Complaints" count={slaBreachAlerts.length} icon={Wrench} color={colors.error} />
-                {slaBreachAlerts.length > 0 ? (
-                  slaBreachAlerts.map(renderAlertCard)
-                ) : (
-                  <Card variant="glass" style={{ padding: spacing.lg, borderLeftWidth: 4, borderLeftColor: colors.success }}>
-                    <Text style={{ fontSize: fontSize.sm, color: colors.success, fontWeight: "600" }}>No unresolved complaint breaches.</Text>
+                <TouchableOpacity 
+                  onPress={() => setSelectedExceptionSection("unresolved_complaint")}
+                  style={{ flex: 1, minWidth: 250 }}
+                >
+                  <Card variant="glass" style={{ padding: spacing.xl, borderLeftWidth: 4, borderLeftColor: colors.error, height: 160, justifyContent: "space-between" }}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                      <View style={{ width: 44, height: 44, borderRadius: borderRadius.lg, backgroundColor: colors.rose50, alignItems: "center", justifyContent: "center" }}>
+                        <Wrench size={20} color={colors.error} />
+                      </View>
+                      <Badge label="SLA Breach" type="Critical" />
+                    </View>
+                    <View style={{ marginTop: spacing.md }}>
+                      <Text style={{ fontSize: fontSize["3xl"], fontWeight: "800", color: colors.text }}>{slaBreachAlerts.length}</Text>
+                      <Text style={{ fontSize: fontSize.sm, fontWeight: "600", color: colors.textSecondary }}>SLA Breach Complaints</Text>
+                      <Text style={{ fontSize: fontSize.xs, color: colors.slate400, marginTop: 4 }}>Click to view past-24h breaches</Text>
+                    </View>
                   </Card>
-                )}
+                </TouchableOpacity>
 
-                {/* 4. Deviations & Half-Day Logs */}
-                <SubsectionHeader title="Deviations & Half-Day Logs" count={deviationAlerts.length} icon={Route} color={colors.info} />
-                {deviationAlerts.length > 0 ? (
-                  deviationAlerts.map(renderAlertCard)
-                ) : (
-                  <Card variant="glass" style={{ padding: spacing.lg, borderLeftWidth: 4, borderLeftColor: colors.success }}>
-                    <Text style={{ fontSize: fontSize.sm, color: colors.success, fontWeight: "600" }}>No geo-deviations or early checkout exceptions.</Text>
+                {/* 4. Deviations & Half-Days */}
+                <TouchableOpacity 
+                  onPress={() => setSelectedExceptionSection("attendance_deviation")}
+                  style={{ flex: 1, minWidth: 250 }}
+                >
+                  <Card variant="glass" style={{ padding: spacing.xl, borderLeftWidth: 4, borderLeftColor: colors.info, height: 160, justifyContent: "space-between" }}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                      <View style={{ width: 44, height: 44, borderRadius: borderRadius.lg, backgroundColor: colors.sky50, alignItems: "center", justifyContent: "center" }}>
+                        <Route size={20} color={colors.info} />
+                      </View>
+                      <Badge label="Deviations" type="Info" />
+                    </View>
+                    <View style={{ marginTop: spacing.md }}>
+                      <Text style={{ fontSize: fontSize["3xl"], fontWeight: "800", color: colors.text }}>{deviationAlerts.length}</Text>
+                      <Text style={{ fontSize: fontSize.sm, fontWeight: "600", color: colors.textSecondary }}>Deviations & Half-Days</Text>
+                      <Text style={{ fontSize: fontSize.xs, color: colors.slate400, marginTop: 4 }}>Click to view geo & checkout logs</Text>
+                    </View>
                   </Card>
-                )}
-              </>
+                </TouchableOpacity>
+              </View>
             )}
           </View>
         </>
+      )}
+
+      {/* Overlay Modal for Exception Section Details */}
+      {selectedExceptionSection !== null && (
+        <View style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "rgba(15, 23, 42, 0.4)",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 1000,
+          padding: spacing.xl,
+        }}>
+          <View style={{
+            width: "100%",
+            maxWidth: 800,
+            maxHeight: "85%",
+            backgroundColor: colors.white,
+            borderRadius: borderRadius.xl,
+            borderWidth: 1,
+            borderColor: colors.border,
+            shadowColor: colors.slate900,
+            shadowOffset: { width: 0, height: 8 },
+            shadowOpacity: 0.15,
+            shadowRadius: 24,
+            padding: spacing.xl,
+          }}>
+            {/* Modal Header */}
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", borderBottomWidth: 1, borderBottomColor: colors.border, paddingBottom: spacing.lg, marginBottom: spacing.lg }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: spacing.md }}>
+                {selectedExceptionSection === "branch_not_opened" ? (
+                  <Building size={20} color={colors.brand} />
+                ) : selectedExceptionSection === "missing_attendance" ? (
+                  <Users size={20} color={colors.warning} />
+                ) : selectedExceptionSection === "unresolved_complaint" ? (
+                  <Wrench size={20} color={colors.error} />
+                ) : (
+                  <Route size={20} color={colors.info} />
+                )}
+                <Text style={{ fontSize: fontSize.xl, fontWeight: "800", color: colors.text }}>
+                  {selectedExceptionSection === "branch_not_opened" ? "Branch Opening Status Details" :
+                   selectedExceptionSection === "missing_attendance" ? "Staff Attendance Exceptions Details" :
+                   selectedExceptionSection === "unresolved_complaint" ? "SLA Breach Complaints Details" :
+                   "Deviations & Half-Day Logs Details"}
+                </Text>
+              </View>
+              <TouchableOpacity 
+                onPress={() => setSelectedExceptionSection(null)}
+                style={{ paddingHorizontal: spacing.lg, paddingVertical: spacing.md, backgroundColor: colors.slate100, borderRadius: borderRadius.full }}
+              >
+                <Text style={{ fontSize: fontSize.sm, fontWeight: "800", color: colors.slate600 }}>✕</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Scrollable Alerts List */}
+            <View style={{ flex: 1, overflow: "scroll" }}>
+              <View style={{ gap: spacing.md, paddingBottom: spacing.xl }}>
+                {(selectedExceptionSection === "branch_not_opened" ? branchOpeningAlerts :
+                  selectedExceptionSection === "missing_attendance" ? missingAttendanceAlerts :
+                  selectedExceptionSection === "unresolved_complaint" ? slaBreachAlerts :
+                  deviationAlerts).map(renderAlertCard)}
+
+                {(selectedExceptionSection === "branch_not_opened" ? branchOpeningAlerts :
+                  selectedExceptionSection === "missing_attendance" ? missingAttendanceAlerts :
+                  selectedExceptionSection === "unresolved_complaint" ? slaBreachAlerts :
+                  deviationAlerts).length === 0 && (
+                  <View style={{ alignItems: "center", padding: spacing["4xl"] }}>
+                    <CheckCircle size={32} color={colors.success} strokeWidth={1.5} />
+                    <Text style={{ fontSize: fontSize.lg, fontWeight: "600", color: colors.text, marginTop: spacing.md }}>All Clear</Text>
+                    <Text style={{ fontSize: fontSize.sm, color: colors.textSecondary }}>No active exceptions in this category.</Text>
+                  </View>
+                )}
+              </View>
+            </View>
+          </View>
+        </View>
       )}
     </ScreenWrapper>
   );

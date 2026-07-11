@@ -214,38 +214,7 @@ function TabletLayout({ children }: { children: ReactNode }) {
             })}
           </ScrollView>
 
-          {/* Operational pulse */}
-          <View
-            style={{
-              marginTop: "auto",
-              borderRadius: 24,
-              backgroundColor: colors.amber500,
-              padding: spacing["3xl"],
-            }}
-          >
-            <Text style={{ fontSize: fontSize.lg, fontWeight: "800", color: colors.white }}>
-              Operational pulse
-            </Text>
-            <Text style={{ marginTop: spacing.xs, fontSize: fontSize.sm, color: "rgba(255,255,255,0.85)" }}>
-              Every action stores proof, audit notes, and escalation readiness.
-            </Text>
-            <TouchableOpacity
-              onPress={() => openFormModal("quick")}
-              activeOpacity={0.7}
-              style={{
-                marginTop: spacing["3xl"],
-                borderRadius: 16,
-                backgroundColor: colors.white,
-                paddingHorizontal: spacing["3xl"],
-                paddingVertical: spacing.lg,
-                alignSelf: "flex-start",
-              }}
-            >
-              <Text style={{ fontSize: fontSize.sm, fontWeight: "600", color: colors.orange700 }}>
-                Open quick action
-              </Text>
-            </TouchableOpacity>
-          </View>
+        
         </View>
       </View>
 
