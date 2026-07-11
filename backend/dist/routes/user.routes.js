@@ -1,0 +1,17 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const user_controller_1 = require("../controllers/user.controller");
+const auth_middleware_1 = require("../middlewares/auth.middleware");
+const router = (0, express_1.Router)();
+router.get("/", auth_middleware_1.authenticateToken, user_controller_1.getUsers);
+router.get("/hierarchy", auth_middleware_1.authenticateToken, user_controller_1.getHierarchy);
+router.get("/available-branches/:amId", auth_middleware_1.authenticateToken, user_controller_1.getAvailableBranches);
+router.get("/unassigned-branches", auth_middleware_1.authenticateToken, user_controller_1.getUnassignedBranches);
+router.post("/", auth_middleware_1.authenticateToken, user_controller_1.createUser);
+router.put("/:id", auth_middleware_1.authenticateToken, user_controller_1.updateUser);
+router.put("/:id/assign-manager", auth_middleware_1.authenticateToken, user_controller_1.assignManager);
+router.put("/:id/assign-branches", auth_middleware_1.authenticateToken, user_controller_1.assignBranches);
+router.put("/:id/assign-branch", auth_middleware_1.authenticateToken, user_controller_1.assignBranch);
+router.delete("/:id", auth_middleware_1.authenticateToken, user_controller_1.deleteUser);
+exports.default = router;
