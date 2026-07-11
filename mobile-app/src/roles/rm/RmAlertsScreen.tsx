@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
-import { TriangleAlert, AlertCircle, Info, Bell, CheckCircle, Shield, Layers } from "lucide-react-native";
+import { TriangleAlert, AlertCircle, Info, Bell, CheckCircle, Shield, Layers, Building, Users, Wrench, Route } from "lucide-react-native";
 import { ScreenWrapper } from "../../shared/layout/ScreenWrapper";
 import { SectionHeader } from "../../shared/components/SectionHeader";
 import { SegmentedControl } from "../../shared/components/SegmentedControl";
@@ -29,6 +29,18 @@ function TouchableChip({ label, isSelected, onPress }: { label: string; isSelect
         {label}
       </Text>
     </TouchableOpacity>
+  );
+}
+
+function SubsectionHeader({ title, count, icon: Icon, color }: { title: string; count: number; icon: any; color: string }) {
+  return (
+    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderBottomWidth: 1, borderBottomColor: colors.border, paddingBottom: spacing.sm, marginTop: spacing.xl, marginBottom: spacing.md }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: spacing.md }}>
+        <Icon size={18} color={color} strokeWidth={2} />
+        <Text style={{ fontSize: fontSize.md, fontWeight: "700", color: colors.text }}>{title}</Text>
+      </View>
+      <Badge label={String(count)} type={count > 0 ? "Critical" : "Completed"} />
+    </View>
   );
 }
 
@@ -114,6 +126,66 @@ export function RmAlertsScreen() {
       return true;
     });
   }, [operationalAlerts, selectedBranchId, branchesInRegion]);
+
+  const branchOpeningAlerts = useMemo(() => filteredOperational.filter(a => a.type === "branch_not_opened"), [filteredOperational]);
+  const missingAttendanceAlerts = useMemo(() => filteredOperational.filter(a => a.type === "missing_attendance"), [filteredOperational]);
+  const slaBreachAlerts = useMemo(() => filteredOperational.filter(a => a.type === "unresolved_complaint"), [filteredOperational]);
+  const deviationAlerts = useMemo(() => filteredOperational.filter(a => a.type === "attendance_deviation"), [filteredOperational]);
+
+  const renderAlertCard = (item: any) => {
+    const isCritical = item.priority === "Critical";
+    const isHigh = item.priority === "High";
+    const isWarning = item.priority === "Warning";
+    
+    let iconColor = colors.info;
+    if (isCritical) iconColor = colors.error;
+    else if (isHigh) iconColor = colors.warning;
+    else if (isWarning) iconColor = "#EAB308";
+
+    return (
+      <Card variant="glass" key={item.id} style={{ borderLeftWidth: 4, borderLeftColor: iconColor, marginBottom: spacing.md }}>
+        <View style={{ flexDirection: "row", alignItems: "flex-start", gap: spacing.lg }}>
+          <View style={{ width: 40, height: 40, borderRadius: borderRadius.lg, backgroundColor: isCritical ? colors.rose50 : isHigh ? colors.amber50 : colors.sky50, alignItems: "center", justifyContent: "center" }}>
+            {isCritical ? <TriangleAlert size={18} color={colors.error} strokeWidth={2} /> : isHigh ? <AlertCircle size={18} color={colors.warning} strokeWidth={2} /> : <Info size={18} color={colors.info} strokeWidth={2} />}
+          </View>
+          <View style={{ flex: 1 }}>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm, alignItems: "center" }}>
+              <Badge label={item.priority} type={item.priority} />
+              <Badge label={item.type.replace(/_/g, " ").toUpperCase()} type="Info" />
+            </View>
+            <Text style={{ fontSize: fontSize.lg, fontWeight: "800", color: colors.text, marginTop: spacing.md }}>{item.title}</Text>
+            <Text style={{ fontSize: fontSize.sm, color: colors.textSecondary, marginTop: spacing.xs }}>{item.detail}</Text>
+            <Text style={{ fontSize: fontSize.xs, color: colors.slate400, marginTop: spacing.lg }}>Date: {item.time}</Text>
+
+            <TouchableOpacity
+              onPress={() => {
+                if (item.type === "branch_not_opened" && item.branchId) {
+                  openBranchDetail(item.branchId);
+                } else if (item.type === "unresolved_complaint" && item.entityId) {
+                  openComplaintDetail(item.entityId);
+                } else if ((item.type === "missing_attendance" || item.type === "attendance_deviation") && item.branchId) {
+                  setPage("attendance");
+                }
+              }}
+              style={{
+                alignSelf: "flex-start",
+                marginTop: spacing.lg,
+                backgroundColor: colors.slate100,
+                borderRadius: borderRadius.md,
+                paddingHorizontal: spacing.lg,
+                paddingVertical: spacing.sm,
+              }}
+            >
+              <Text style={{ fontSize: fontSize.xs, fontWeight: "700", color: colors.brand }}>
+                {item.type === "branch_not_opened" ? "View Branch Details" : item.type === "unresolved_complaint" ? "Go to Complaint" : "Check Attendance"}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Card>
+    );
+  };
+
 
   return (
     <ScreenWrapper>
@@ -303,7 +375,7 @@ export function RmAlertsScreen() {
             </View>
           </View>
 
-          <View style={{ gap: spacing.xl }}>
+          <View style={{ gap: spacing.md }}>
             {operationalAlertsLoading ? (
               <Card variant="glass">
                 <View style={{ alignItems: "center", padding: spacing["4xl"] }}>
@@ -311,69 +383,47 @@ export function RmAlertsScreen() {
                 </View>
               </Card>
             ) : (
-              filteredOperational.map((item) => {
-                const isCritical = item.priority === "Critical";
-                const isHigh = item.priority === "High";
-                const isWarning = item.priority === "Warning";
-                
-                let iconColor = colors.info;
-                if (isCritical) iconColor = colors.error;
-                else if (isHigh) iconColor = colors.warning;
-                else if (isWarning) iconColor = "#EAB308";
-
-                return (
-                  <Card variant="glass" key={item.id} style={{ borderLeftWidth: 4, borderLeftColor: iconColor }}>
-                    <View style={{ flexDirection: "row", alignItems: "flex-start", gap: spacing.lg }}>
-                      <View style={{ width: 40, height: 40, borderRadius: borderRadius.lg, backgroundColor: isCritical ? colors.rose50 : isHigh ? colors.amber50 : colors.sky50, alignItems: "center", justifyContent: "center" }}>
-                        {isCritical ? <TriangleAlert size={18} color={colors.error} strokeWidth={2} /> : isHigh ? <AlertCircle size={18} color={colors.warning} strokeWidth={2} /> : <Info size={18} color={colors.info} strokeWidth={2} />}
-                      </View>
-                      <View style={{ flex: 1 }}>
-                        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm, alignItems: "center" }}>
-                          <Badge label={item.priority} type={item.priority} />
-                          <Badge label={item.type.replace(/_/g, " ").toUpperCase()} type="Info" />
-                        </View>
-                        <Text style={{ fontSize: fontSize.lg, fontWeight: "800", color: colors.text, marginTop: spacing.md }}>{item.title}</Text>
-                        <Text style={{ fontSize: fontSize.sm, color: colors.textSecondary, marginTop: spacing.xs }}>{item.detail}</Text>
-                        <Text style={{ fontSize: fontSize.xs, color: colors.slate400, marginTop: spacing.lg }}>Date: {item.time}</Text>
-
-                        <TouchableOpacity
-                          onPress={() => {
-                            if (item.type === "branch_not_opened" && item.branchId) {
-                              openBranchDetail(item.branchId);
-                            } else if (item.type === "unresolved_complaint" && item.entityId) {
-                              openComplaintDetail(item.entityId);
-                            } else if ((item.type === "missing_attendance" || item.type === "attendance_deviation") && item.branchId) {
-                              setPage("attendance");
-                            }
-                          }}
-                          style={{
-                            alignSelf: "flex-start",
-                            marginTop: spacing.lg,
-                            backgroundColor: colors.slate100,
-                            borderRadius: borderRadius.md,
-                            paddingHorizontal: spacing.lg,
-                            paddingVertical: spacing.sm,
-                          }}
-                        >
-                          <Text style={{ fontSize: fontSize.xs, fontWeight: "700", color: colors.brand }}>
-                            {item.type === "branch_not_opened" ? "View Branch Details" : item.type === "unresolved_complaint" ? "Go to Complaint" : "Check Attendance"}
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
+              <>
+                {/* 1. Branch Openings Section */}
+                <SubsectionHeader title="Branch Openings Status" count={branchOpeningAlerts.length} icon={Building} color={colors.brand} />
+                {branchOpeningAlerts.length > 0 ? (
+                  branchOpeningAlerts.map(renderAlertCard)
+                ) : (
+                  <Card variant="glass" style={{ padding: spacing.lg, borderLeftWidth: 4, borderLeftColor: colors.success }}>
+                    <Text style={{ fontSize: fontSize.sm, color: colors.success, fontWeight: "600" }}>All branches opened on schedule.</Text>
                   </Card>
-                );
-              })
-            )}
+                )}
 
-            {!operationalAlertsLoading && filteredOperational.length === 0 && (
-              <Card variant="glass">
-                <View style={{ alignItems: "center", padding: spacing["4xl"] }}>
-                  <CheckCircle size={32} color={colors.success} strokeWidth={1.5} />
-                  <Text style={{ fontSize: fontSize.lg, fontWeight: "400", color: colors.text, marginTop: spacing.lg }}>All Systems Operational</Text>
-                  <Text style={{ fontSize: fontSize.sm, color: colors.textSecondary, marginTop: spacing.sm }}>No operational exceptions detected for the selected filter on {selectedDate}.</Text>
-                </View>
-              </Card>
+                {/* 2. Staff Attendance Exceptions */}
+                <SubsectionHeader title="Staff Attendance Exceptions" count={missingAttendanceAlerts.length} icon={Users} color={colors.warning} />
+                {missingAttendanceAlerts.length > 0 ? (
+                  missingAttendanceAlerts.map(renderAlertCard)
+                ) : (
+                  <Card variant="glass" style={{ padding: spacing.lg, borderLeftWidth: 4, borderLeftColor: colors.success }}>
+                    <Text style={{ fontSize: fontSize.sm, color: colors.success, fontWeight: "600" }}>All staff attendance accounted for.</Text>
+                  </Card>
+                )}
+
+                {/* 3. SLA Breach Complaints */}
+                <SubsectionHeader title="SLA Breach Complaints" count={slaBreachAlerts.length} icon={Wrench} color={colors.error} />
+                {slaBreachAlerts.length > 0 ? (
+                  slaBreachAlerts.map(renderAlertCard)
+                ) : (
+                  <Card variant="glass" style={{ padding: spacing.lg, borderLeftWidth: 4, borderLeftColor: colors.success }}>
+                    <Text style={{ fontSize: fontSize.sm, color: colors.success, fontWeight: "600" }}>No unresolved complaint breaches.</Text>
+                  </Card>
+                )}
+
+                {/* 4. Deviations & Half-Day Logs */}
+                <SubsectionHeader title="Deviations & Half-Day Logs" count={deviationAlerts.length} icon={Route} color={colors.info} />
+                {deviationAlerts.length > 0 ? (
+                  deviationAlerts.map(renderAlertCard)
+                ) : (
+                  <Card variant="glass" style={{ padding: spacing.lg, borderLeftWidth: 4, borderLeftColor: colors.success }}>
+                    <Text style={{ fontSize: fontSize.sm, color: colors.success, fontWeight: "600" }}>No geo-deviations or early checkout exceptions.</Text>
+                  </Card>
+                )}
+              </>
             )}
           </View>
         </>
