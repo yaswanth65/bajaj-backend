@@ -43,11 +43,11 @@ export function RmAlertsScreen() {
 
   const [alertMode, setAlertMode] = useState<"system" | "operational">("system");
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [selectedBranchId, setSelectedBranchId] = useState<string | number>("");
+  const [selectedRegion, setSelectedRegion] = useState("all");
+  const [selectedBranchId, setSelectedBranchId] = useState<string | number>("all");
 
   useEffect(() => {
-    setSelectedBranchId("");
+    setSelectedBranchId("all");
   }, [selectedRegion]);
 
   useEffect(() => {
@@ -103,6 +103,18 @@ export function RmAlertsScreen() {
     return true;
   });
 
+  const filteredOperational = useMemo(() => {
+    return operationalAlerts.filter((item) => {
+      if (selectedBranchId === "all") {
+        const regionBranchIds = branchesInRegion.map(b => b.id);
+        if (!regionBranchIds.includes(item.branchId)) return false;
+      } else if (selectedBranchId !== "") {
+        if (item.branchId !== selectedBranchId) return false;
+      }
+      return true;
+    });
+  }, [operationalAlerts, selectedBranchId, branchesInRegion]);
+
   return (
     <ScreenWrapper>
       <SectionHeader
@@ -113,6 +125,35 @@ export function RmAlertsScreen() {
           ) : null
         }
       />
+
+      {/* Shared Filters for Region & Branch */}
+      <View style={{ marginBottom: spacing.xl, gap: spacing.md }}>
+        <View>
+          <Text style={{ fontSize: fontSize.xs, color: colors.slate400, marginBottom: spacing.xs, fontWeight: "600" }}>
+            1. CHOOSE REGION
+          </Text>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}>
+            <TouchableChip label="All Regions" isSelected={selectedRegion === "all"} onPress={() => setSelectedRegion("all")} />
+            {uniqueRegions.map((region) => (
+              <TouchableChip key={region} label={region} isSelected={selectedRegion === region} onPress={() => setSelectedRegion(region)} />
+            ))}
+          </View>
+        </View>
+
+        {selectedRegion !== "" && (
+          <View>
+            <Text style={{ fontSize: fontSize.xs, color: colors.slate400, marginBottom: spacing.xs, fontWeight: "600" }}>
+              2. CHOOSE BRANCH
+            </Text>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}>
+              <TouchableChip label="All Branches" isSelected={selectedBranchId === "all"} onPress={() => setSelectedBranchId("all")} />
+              {branchesInRegion.map((b) => (
+                <TouchableChip key={b.id} label={b.name} isSelected={selectedBranchId === b.id} onPress={() => setSelectedBranchId(b.id)} />
+              ))}
+            </View>
+          </View>
+        )}
+      </View>
 
       <View style={{ flexDirection: "row", backgroundColor: colors.slate100, borderRadius: borderRadius.xl, padding: 4, marginBottom: spacing.xl }}>
         <TouchableOpacity
@@ -131,39 +172,8 @@ export function RmAlertsScreen() {
 
       {alertMode === "system" ? (
         <>
-          <View style={{ marginTop: spacing.xl }}>
-            <Text style={{ fontSize: fontSize.xs, color: colors.slate400, marginBottom: spacing.sm, fontWeight: "600" }}>
-              1. CHOOSE REGION
-            </Text>
-            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}>
-              <TouchableChip label="All Regions" isSelected={selectedRegion === "all"} onPress={() => setSelectedRegion("all")} />
-              {uniqueRegions.map((region) => (
-                <TouchableChip key={region} label={region} isSelected={selectedRegion === region} onPress={() => setSelectedRegion(region)} />
-              ))}
-            </View>
-          </View>
-
-          {selectedRegion !== "" ? (
-            <View style={{ marginTop: spacing.xl }}>
-              <Text style={{ fontSize: fontSize.xs, color: colors.slate400, marginBottom: spacing.sm, fontWeight: "600" }}>
-                2. CHOOSE BRANCH
-              </Text>
-              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}>
-                <TouchableChip label="All Branches" isSelected={selectedBranchId === "all"} onPress={() => setSelectedBranchId("all")} />
-                {branchesInRegion.map((b) => (
-                  <TouchableChip key={b.id} label={b.name} isSelected={selectedBranchId === b.id} onPress={() => setSelectedBranchId(b.id)} />
-                ))}
-              </View>
-            </View>
-          ) : (
-            <Card style={{ marginTop: spacing.xl, padding: spacing.xl, borderStyle: "dashed", borderWidth: 1, borderColor: colors.border, alignItems: "center" }}>
-              <Layers size={24} color={colors.slate300} style={{ marginBottom: spacing.sm }} />
-              <Text style={{ fontSize: fontSize.sm, color: colors.slate400 }}>Select a region above to load branches</Text>
-            </Card>
-          )}
-
           {selectedRegion !== "" && selectedBranchId !== "" ? (
-            <View style={{ gap: spacing.xl, marginTop: spacing.xl }}>
+            <View style={{ gap: spacing.xl }}>
               {filtered.map((item) => {
                 const alertState = alertStates[item.id];
                 const isAcknowledged = alertState?.acknowledged || false;
@@ -267,18 +277,13 @@ export function RmAlertsScreen() {
                 </Card>
               )}
             </View>
-          ) : selectedRegion !== "" ? (
-            <Card style={{ marginTop: spacing.xl, padding: spacing.xl, borderStyle: "dashed", borderWidth: 1, borderColor: colors.border, alignItems: "center" }}>
-              <Layers size={24} color={colors.slate300} style={{ marginBottom: spacing.sm }} />
-              <Text style={{ fontSize: fontSize.sm, color: colors.slate400 }}>Select a branch or "All Branches" to load alerts</Text>
-            </Card>
           ) : null}
         </>
       ) : (
         <>
-          <View style={{ marginTop: spacing.xl }}>
+          <View style={{ marginBottom: spacing.xl }}>
             <Text style={{ fontSize: fontSize.xs, color: colors.slate400, marginBottom: spacing.sm, fontWeight: "600" }}>
-              1. CHOOSE DATE
+              CHOOSE DATE
             </Text>
             <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm, marginBottom: spacing.md }}>
               <TouchableChip label="Today" isSelected={selectedDate === todayStr} onPress={() => setSelectedDate(todayStr)} />
@@ -298,7 +303,7 @@ export function RmAlertsScreen() {
             </View>
           </View>
 
-          <View style={{ gap: spacing.xl, marginTop: spacing.xl }}>
+          <View style={{ gap: spacing.xl }}>
             {operationalAlertsLoading ? (
               <Card variant="glass">
                 <View style={{ alignItems: "center", padding: spacing["4xl"] }}>
@@ -306,7 +311,7 @@ export function RmAlertsScreen() {
                 </View>
               </Card>
             ) : (
-              operationalAlerts.map((item) => {
+              filteredOperational.map((item) => {
                 const isCritical = item.priority === "Critical";
                 const isHigh = item.priority === "High";
                 const isWarning = item.priority === "Warning";
@@ -361,12 +366,12 @@ export function RmAlertsScreen() {
               })
             )}
 
-            {!operationalAlertsLoading && operationalAlerts.length === 0 && (
+            {!operationalAlertsLoading && filteredOperational.length === 0 && (
               <Card variant="glass">
                 <View style={{ alignItems: "center", padding: spacing["4xl"] }}>
                   <CheckCircle size={32} color={colors.success} strokeWidth={1.5} />
                   <Text style={{ fontSize: fontSize.lg, fontWeight: "400", color: colors.text, marginTop: spacing.lg }}>All Systems Operational</Text>
-                  <Text style={{ fontSize: fontSize.sm, color: colors.textSecondary, marginTop: spacing.sm }}>No operational exceptions detected for {selectedDate}.</Text>
+                  <Text style={{ fontSize: fontSize.sm, color: colors.textSecondary, marginTop: spacing.sm }}>No operational exceptions detected for the selected filter on {selectedDate}.</Text>
                 </View>
               </Card>
             )}
