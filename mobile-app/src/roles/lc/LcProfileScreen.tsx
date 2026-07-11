@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -9,6 +9,7 @@ import {
 import { ScreenWrapper } from "../../shared/layout/ScreenWrapper";
 import { StatCard } from "../../shared/components/StatCard";
 import { Card } from "../../shared/components/Card";
+import { EditProfileModal } from "../../modals/forms/EditProfileModal";
 import { useApp } from "../../context/AppContext";
 import { colors, fontSize, spacing, borderRadius, fontWeight } from "../../theme/theme";
 
@@ -88,6 +89,7 @@ function SectionTitle({ title }: { title: string }) {
 
 export function LcProfileScreen() {
   const { currentUser, getBranch, openAuditTrail, logout } = useApp();
+  const [editVisible, setEditVisible] = useState(false);
   if (!currentUser) return null;
 
   const branch = getBranch(currentUser.branchId);
@@ -105,6 +107,15 @@ export function LcProfileScreen() {
 
   return (
     <ScreenWrapper>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: spacing.lg }}>
+        <Text style={{ fontSize: fontSize.xl, fontWeight: "800", color: colors.text }}>Profile & credentials</Text>
+        <TouchableOpacity 
+          onPress={() => setEditVisible(true)}
+          style={{ backgroundColor: colors.brand, borderRadius: borderRadius.md, paddingHorizontal: spacing.lg, paddingVertical: spacing.sm }}
+        >
+          <Text style={{ fontSize: fontSize.xs, fontWeight: "700", color: colors.white }}>Edit Profile</Text>
+        </TouchableOpacity>
+      </View>
       {/* ── Avatar Header ── */}
       <LinearGradient
         colors={["#1D4ED8", "#3B82F6", "#60A5FA"]}
@@ -374,6 +385,7 @@ export function LcProfileScreen() {
           <ChevronRight size={16} color={colors.slate400} strokeWidth={2} />
         </TouchableOpacity>
       </View>
+      <EditProfileModal visible={editVisible} onClose={() => setEditVisible(false)} />
     </ScreenWrapper>
   );
 }

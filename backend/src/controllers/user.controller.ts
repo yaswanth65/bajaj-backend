@@ -565,7 +565,7 @@ export const updateUser = async (req: AuthenticatedRequest, res: Response) => {
     }
 
     const { id } = req.params;
-    const { name, phone, shift, skills, expoPushToken, status } = req.body;
+    const { name, phone, email, shift, skills, emergencyContact, expoPushToken, status } = req.body;
 
     if (skills !== undefined && !Array.isArray(skills)) {
       return res.status(400).json({ message: "Skills must be a valid array of strings" });
@@ -586,8 +586,10 @@ export const updateUser = async (req: AuthenticatedRequest, res: Response) => {
       data: {
         name: name || undefined,
         phone: phone || undefined,
+        email: email || undefined,
         shift: shift || undefined,
         skills: skills || undefined,
+        emergencyContact: emergencyContact || undefined,
         expoPushToken: expoPushToken !== undefined ? expoPushToken : undefined,
         status: status || undefined,
       },
@@ -600,6 +602,9 @@ export const updateUser = async (req: AuthenticatedRequest, res: Response) => {
         phone: true,
         shift: true,
         status: true,
+        emergencyContact: true,
+        skills: true,
+        documents: true,
         expoPushToken: true,
       }
     });

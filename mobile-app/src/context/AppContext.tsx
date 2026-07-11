@@ -1315,12 +1315,31 @@ export function AppProvider({ children }: { children: ReactNode }) {
       await apiClient.put(`/users/${id}`, {
         name: data.name,
         phone: data.phone,
+        email: data.email,
         shift: data.shift,
         skills: data.skills,
+        emergencyContact: data.emergencyContact,
         status: data.status
       });
       addAuditEntry(`User profile ${id} updated by ${currentUser.name}`, "Edit", "#6366F1");
       showToast("Profile updated");
+
+      // Check if we updated the CURRENT logged-in user
+      if (currentUser && String(id) === String(currentUser.id)) {
+        const updatedProfile = {
+          ...currentUser,
+          name: data.name !== undefined ? data.name : currentUser.name,
+          phone: data.phone !== undefined ? data.phone : currentUser.phone,
+          email: data.email !== undefined ? data.email : currentUser.email,
+          shift: data.shift !== undefined ? data.shift : currentUser.shift,
+          skills: data.skills !== undefined ? data.skills : currentUser.skills,
+          emergencyContact: data.emergencyContact !== undefined ? data.emergencyContact : currentUser.emergencyContact,
+          status: data.status !== undefined ? data.status : currentUser.status,
+        };
+        setCurrentUser(updatedProfile);
+        await saveSecure("user_profile", JSON.stringify(updatedProfile));
+      }
+
       await refreshData();
     } catch (e: any) {
       console.error(e);

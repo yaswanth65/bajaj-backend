@@ -13,21 +13,21 @@ interface Props {
 export function EditProfileModal({ visible, onClose }: Props) {
   const { currentUser, editUser, showToast } = useApp();
 
-  const [phone, setPhone] = useState(currentUser.phone);
-  const [email, setEmail] = useState(currentUser.email);
-  const [shift, setShift] = useState(currentUser.shift);
-  const [emergencyContact, setEmergencyContact] = useState(currentUser.emergencyContact);
-  const [skills, setSkills] = useState((Array.isArray(currentUser.skills) ? currentUser.skills : []).join(", "));
+  const [phone, setPhone] = useState(currentUser?.phone || "");
+  const [email, setEmail] = useState(currentUser?.email || "");
+  const [shift, setShift] = useState(currentUser?.shift || "");
+  const [emergencyContact, setEmergencyContact] = useState(currentUser?.emergencyContact || "");
+  const [skills, setSkills] = useState((Array.isArray(currentUser?.skills) ? currentUser.skills : []).join(", "));
 
   useEffect(() => {
-    if (visible) {
-      setPhone(currentUser.phone);
-      setEmail(currentUser.email);
-      setShift(currentUser.shift);
-      setEmergencyContact(currentUser.emergencyContact);
+    if (visible && currentUser) {
+      setPhone(currentUser.phone || "");
+      setEmail(currentUser.email || "");
+      setShift(currentUser.shift || "");
+      setEmergencyContact(currentUser.emergencyContact || "");
       setSkills((Array.isArray(currentUser.skills) ? currentUser.skills : []).join(", "));
     }
-  }, [visible]);
+  }, [visible, currentUser]);
 
   const handleSave = () => {
     if (!phone.trim() || !email.trim()) {
@@ -59,6 +59,8 @@ export function EditProfileModal({ visible, onClose }: Props) {
       </View>
     </View>
   );
+
+  if (!currentUser) return null;
 
   return (
     <ModalSheet visible={visible} onClose={onClose} title="Edit profile" subtitle="Update your contact information and preferences">
