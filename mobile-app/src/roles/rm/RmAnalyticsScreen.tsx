@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { View, Text, TouchableOpacity, ScrollView, Dimensions, ActivityIndicator } from "react-native";
-import { CheckCircle, AlertTriangle, AlertCircle, Clock, DollarSign, Layers, Activity, User as UserIcon, Building, ShieldCheck } from "lucide-react-native";
-import { LineChart } from "react-native-chart-kit";
+import { CheckCircle, AlertTriangle, AlertCircle, Layers, User as UserIcon, Building, ShieldCheck } from "lucide-react-native";
 import { ScreenWrapper } from "../../shared/layout/ScreenWrapper";
 import { SectionHeader } from "../../shared/components/SectionHeader";
 import { StatCard } from "../../shared/components/StatCard";
 import { Card } from "../../shared/components/Card";
 import { Badge } from "../../shared/components/Badge";
 import { SegmentedControl } from "../../shared/components/SegmentedControl";
-import { ProgressBar } from "../../shared/components/ProgressBar";
 import { useApp } from "../../context/AppContext";
 import { colors, fontSize, spacing, borderRadius } from "../../theme/theme";
 import { apiClient } from "../../services/api/client";
@@ -155,22 +153,7 @@ export function RmAnalyticsScreen() {
     { label: "Users View", value: "users" },
   ];
 
-  const { totalBudget, usedBudget, totalOpenComplaints, totalResolvedComplaints, totalComplaintsCount } = React.useMemo(() => {
-    if (!data || !data.analytics) {
-      return { totalBudget: 0, usedBudget: 0, totalOpenComplaints: 0, totalResolvedComplaints: 0, totalComplaintsCount: 0 };
-    }
-    const tB = data.analytics.reduce((s: number, b: any) => s + (b.monthlyBudget || 0), 0);
-    const uB = data.analytics.reduce((s: number, b: any) => s + (b.usedBudget || 0), 0);
-    const tO = data.analytics.reduce((s: number, b: any) => s + (b.openComplaints || 0), 0);
-    const tR = data.analytics.reduce((s: number, b: any) => s + (b.resolvedComplaints || 0), 0);
-    return {
-      totalBudget: tB,
-      usedBudget: uB,
-      totalOpenComplaints: tO,
-      totalResolvedComplaints: tR,
-      totalComplaintsCount: tO + tR
-    };
-  }, [data]);
+  // Cleaned up unused budget and complaint memo calculations
 
   return (
     <ScreenWrapper>
@@ -208,55 +191,9 @@ export function RmAnalyticsScreen() {
               <StatCard label="Tasks Done" value={`${data.regionMetrics.completedTasks ?? 0} / ${data.regionMetrics.totalTasks ?? 0}`} meta="Current Week" accent={colors.success} icon={CheckCircle} />
             </View>
             <View style={{ flex: 1, minWidth: 140 }}>
-              <StatCard label="Complaints Resolved" value={`${totalResolvedComplaints} / ${totalComplaintsCount}`} meta="Issues addressed" accent={colors.brand} icon={ShieldCheck} />
-            </View>
-            <View style={{ flex: 1, minWidth: 140 }}>
-              <StatCard label="Open Critical" value={String(data.regionMetrics.criticalComplaints ?? 0)} meta="Requires intervention" accent={colors.error} icon={AlertCircle} />
-            </View>
-            <View style={{ flex: 1, minWidth: 140 }}>
-              <StatCard label="Budget Spent" value={`₹${Math.round(usedBudget / 1000)}k / ₹${Math.round(totalBudget / 1000)}k`} meta="Capex utilized" accent={colors.warning} icon={DollarSign} />
+              <StatCard label="Open Issues" value={String(data.regionMetrics.openComplaints ?? 0)} meta="Active complaints" accent={colors.brand} icon={ShieldCheck} />
             </View>
           </View>
-
-          {/* HISTORICAL TRENDS CHART */}
-          <Card variant="glass">
-            <View style={{ flexDirection: "row", alignItems: "center", gap: spacing.md, marginBottom: spacing.lg }}>
-              <View style={{ width: 32, height: 32, borderRadius: borderRadius.md, backgroundColor: colors.brand + "15", alignItems: "center", justifyContent: "center" }}>
-                <Activity size={16} color={colors.brand} strokeWidth={2} />
-              </View>
-              <Text style={{ fontSize: fontSize.lg, fontWeight: "600", color: colors.text }}>6-Month Performance Trend</Text>
-            </View>
-            {data.trends && data.trends.labels ? (
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <LineChart
-                  data={{
-                    labels: data.trends.labels,
-                    datasets: [
-                      { data: data.trends.tasks, color: (opacity = 1) => colors.success, strokeWidth: 3 }
-                    ],
-                    legend: ["Task Completion %"]
-                  }}
-                  width={screenWidth - spacing.xl * 2 - 20}
-                  height={220}
-                  yAxisSuffix="%"
-                  chartConfig={{
-                    backgroundColor: colors.card,
-                    backgroundGradientFrom: colors.card,
-                    backgroundGradientTo: colors.card,
-                    decimalPlaces: 0,
-                    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                    labelColor: (opacity = 1) => colors.textSecondary,
-                    style: { borderRadius: 16 },
-                    propsForDots: { r: "4", strokeWidth: "2", stroke: colors.white }
-                  }}
-                  bezier
-                  style={{ borderRadius: 16 }}
-                />
-              </ScrollView>
-            ) : (
-              <Text style={{ color: colors.textSecondary, fontStyle: "italic" }}>Not enough historical data.</Text>
-            )}
-          </Card>
 
           {activeTab === "branches" ? (
             <>
@@ -318,21 +255,17 @@ export function RmAnalyticsScreen() {
                       
                       {/* Enhanced Stats Row */}
                       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}>
-                        <View style={{ flex: 1, minWidth: '45%', backgroundColor: colors.white, padding: spacing.sm, borderRadius: borderRadius.md }}>
+                        <View style={{ flex: 1, minWidth: '30%', backgroundColor: colors.white, padding: spacing.sm, borderRadius: borderRadius.md }}>
                           <Text style={{ fontSize: fontSize.xs, color: colors.textSecondary }}>Tasks Done</Text>
-                          <Text style={{ fontSize: fontSize.md, fontWeight: "600", color: colors.text }}>{branch.taskCompletionRate ?? 0}%</Text>
+                          <Text style={{ fontSize: fontSize.sm, fontWeight: "600", color: colors.text }}>{branch.completedTasks ?? 0} / {branch.totalTasks ?? 0}</Text>
                         </View>
-                        <View style={{ flex: 1, minWidth: '45%', backgroundColor: colors.white, padding: spacing.sm, borderRadius: borderRadius.md }}>
-                          <Text style={{ fontSize: fontSize.xs, color: colors.textSecondary }}>Checks Done</Text>
-                          <Text style={{ fontSize: fontSize.md, fontWeight: "600", color: colors.text }}>{Math.round((branch.taskCompletionRate ?? 0) * 0.8)} / 100</Text>
+                        <View style={{ flex: 1, minWidth: '30%', backgroundColor: colors.white, padding: spacing.sm, borderRadius: borderRadius.md }}>
+                          <Text style={{ fontSize: fontSize.xs, color: colors.textSecondary }}>Open Issues</Text>
+                          <Text style={{ fontSize: fontSize.sm, fontWeight: "600", color: colors.text }}>{branch.openComplaints ?? 0}</Text>
                         </View>
-                        <View style={{ flex: 1, minWidth: '45%', backgroundColor: colors.white, padding: spacing.sm, borderRadius: borderRadius.md }}>
-                          <Text style={{ fontSize: fontSize.xs, color: colors.textSecondary }}>Issues Raised</Text>
-                          <Text style={{ fontSize: fontSize.md, fontWeight: "600", color: colors.text }}>{branch.openComplaints ?? 0}</Text>
-                        </View>
-                        <View style={{ flex: 1, minWidth: '45%', backgroundColor: colors.white, padding: spacing.sm, borderRadius: borderRadius.md }}>
+                        <View style={{ flex: 1, minWidth: '30%', backgroundColor: colors.white, padding: spacing.sm, borderRadius: borderRadius.md }}>
                           <Text style={{ fontSize: fontSize.xs, color: colors.textSecondary }}>Attendance</Text>
-                          <Text style={{ fontSize: fontSize.md, fontWeight: "600", color: colors.text }}>{branch.todayAttendance ?? 0}%</Text>
+                          <Text style={{ fontSize: fontSize.sm, fontWeight: "600", color: colors.text }}>{branch.todayAttendance ?? 0}%</Text>
                         </View>
                       </View>
                     </TouchableOpacity>
@@ -363,15 +296,11 @@ export function RmAnalyticsScreen() {
                     <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}>
                       <View style={{ flex: 1, minWidth: '45%', backgroundColor: colors.white, padding: spacing.sm, borderRadius: borderRadius.md }}>
                         <Text style={{ fontSize: fontSize.xs, color: colors.textSecondary }}>Tasks Closed</Text>
-                        <Text style={{ fontSize: fontSize.md, fontWeight: "600", color: colors.text }}>{user.tasksClosed ?? 0}</Text>
+                        <Text style={{ fontSize: fontSize.sm, fontWeight: "600", color: colors.text }}>{user.tasksClosed ?? 0}</Text>
                       </View>
                       <View style={{ flex: 1, minWidth: '45%', backgroundColor: colors.white, padding: spacing.sm, borderRadius: borderRadius.md }}>
                         <Text style={{ fontSize: fontSize.xs, color: colors.textSecondary }}>Attendance</Text>
-                        <Text style={{ fontSize: fontSize.md, fontWeight: "600", color: colors.text }}>{user.attendancePct ?? 0}%</Text>
-                      </View>
-                      <View style={{ flex: 1, minWidth: '100%', backgroundColor: colors.white, padding: spacing.sm, borderRadius: borderRadius.md }}>
-                        <Text style={{ fontSize: fontSize.xs, color: colors.textSecondary, marginBottom: spacing.xs }}>Proof Quality Rate</Text>
-                        <ProgressBar value={user.proofRate ?? 0} color={colors.brand} />
+                        <Text style={{ fontSize: fontSize.sm, fontWeight: "600", color: colors.text }}>{user.attendancePct ?? 0}%</Text>
                       </View>
                     </View>
                   </View>
