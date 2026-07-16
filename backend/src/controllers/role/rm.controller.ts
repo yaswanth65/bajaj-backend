@@ -53,6 +53,7 @@ export const rmDashboard = async (req: AuthenticatedRequest, res: Response) => {
           description: true,
           vendorRemarks: true,
           assetId: true,
+          attachmentUrls: true,
           createdAt: true,
           updatedAt: true,
           raisedById: true,

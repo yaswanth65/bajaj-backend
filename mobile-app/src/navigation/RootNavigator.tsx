@@ -91,15 +91,15 @@ registerScreen("rm", "branches", BranchManagerBranchesScreen);
 
 
 // AM mapping
-registerScreen("am", "dashboard", RmDashboardScreen);
+registerScreen("am", "dashboard", BranchManagerHomeScreen);
 registerScreen("am", "branches", BranchManagerBranchesScreen);
-registerScreen("am", "monitoring", RmMonitoringScreen);
+registerScreen("am", "monitoring", BranchManagerMonitoringScreen);
 
 registerScreen("am", "finance", RmFinanceScreen);
 registerScreen("am", "complaints", BranchManagerComplaintsScreen);
 registerScreen("am", "analytics", RmAnalyticsScreen);
 registerScreen("am", "users", RmUsersScreen);
-registerScreen("am", "attendance", RmAttendanceScreen);
+registerScreen("am", "attendance", BranchManagerAttendanceScreen);
 registerScreen("am", "notifications", RmAlertsScreen);
 registerScreen("am", "profile", RmProfileScreen);
 

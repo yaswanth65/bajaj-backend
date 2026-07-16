@@ -26,46 +26,16 @@ const getRenderableImageUri = (value?: string | null) => {
 function ProofImageCard({ proofUrl, taskTitle }: { proofUrl: string | null; taskTitle?: string }) {
   const [loading, setLoading] = useState(true);
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
-  const [hasFallbackApplied, setHasFallbackApplied] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-
-  const getFallbackImage = (title: string): string => {
-    const t = title.toLowerCase();
-    if (t.includes("ac") || t.includes("air cond") || t.includes("split") || t.includes("cassette") || t.includes("hvac") || t.includes("cooler")) {
-      return "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80";
-    }
-    if (t.includes("ups") || t.includes("battery") || t.includes("inverter") || t.includes("power") || t.includes("stabilizer")) {
-      return "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80";
-    }
-    if (t.includes("generator") || t.includes("genset") || t.includes("engine") || t.includes("diesel")) {
-      return "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80";
-    }
-    if (t.includes("fire") || t.includes("extinguisher") || t.includes("safety") || t.includes("smoke")) {
-      return "https://images.unsplash.com/photo-1606206591513-ad3c5acd0a4e?auto=format&fit=crop&w=600&q=80";
-    }
-    if (t.includes("water") || t.includes("purifier") || t.includes("filter") || t.includes("ro ")) {
-      return "https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=600&q=80";
-    }
-    return "https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=600&q=80";
-  };
 
   useEffect(() => {
     setLoading(true);
-    setHasFallbackApplied(false);
     if (!proofUrl || proofUrl === "null" || proofUrl.trim() === "") {
       setCurrentUrl(null);
     } else {
       setCurrentUrl(proofUrl);
     }
   }, [proofUrl]);
-
-  const handleImageError = () => {
-    setLoading(false);
-    if (!hasFallbackApplied) {
-      setCurrentUrl(getFallbackImage(taskTitle || ""));
-      setHasFallbackApplied(true);
-    }
-  };
 
   if (!currentUrl) {
     return (
@@ -89,7 +59,7 @@ function ProofImageCard({ proofUrl, taskTitle }: { proofUrl: string | null; task
           resizeMode="cover"
           onLoadStart={() => setLoading(true)}
           onLoad={() => setLoading(false)}
-          onError={handleImageError}
+          onError={() => setCurrentUrl(null)}
         />
         {loading && (
           <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, alignItems: "center", justifyContent: "center", backgroundColor: colors.slate100 }}>
@@ -116,7 +86,7 @@ function ProofImageCard({ proofUrl, taskTitle }: { proofUrl: string | null; task
                 {taskTitle || "Verification Proof"}
               </Text>
               <Text style={{ color: "#AAA", fontSize: 12 }}>
-                {hasFallbackApplied ? "Sample Image" : "Actual Proof Image"}
+                Actual Proof Image
               </Text>
             </View>
             <TouchableOpacity

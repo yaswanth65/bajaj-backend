@@ -62,7 +62,7 @@ interface UnassignedBranch {
 
 export function UserManagementScreen() {
   const ctx = useApp();
-  const { getHierarchy, createUserIdentity, assignManager, assignBranches, assignBranch, getAvailableBranches, getUnassignedBranches, editUser, showToast, refreshData } = ctx;
+  const { getHierarchy, createUserIdentity, assignManager, assignBranches, assignBranch, getAvailableBranches, getUnassignedBranches, editUser, showToast, refreshData, state } = ctx;
 
   const [hierarchy, setHierarchy] = useState<TreeNode[]>([]);
   const [loading, setLoading] = useState(true);
@@ -507,7 +507,7 @@ export function UserManagementScreen() {
                   style={{ borderRadius: borderRadius.lg, borderWidth: 1, borderColor: colors.border, paddingHorizontal: spacing.xl, paddingVertical: spacing.md, fontSize: fontSize.md, color: colors.text }} /></View>
               <View><Text style={{ fontSize: fontSize.sm, fontWeight: "600", color: colors.textSecondary, marginBottom: spacing.sm }}>Role *</Text>
                 <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.sm }}>
-                  {ROLE_OPTIONS.map((opt) => (
+                  {(state.role === "branchManager" ? ROLE_OPTIONS.filter(r => r.value === "aa" || r.value === "lc") : ROLE_OPTIONS).map((opt) => (
                     <TouchableOpacity key={opt.value} onPress={() => setAddRole(opt.value)}
                       style={{ paddingHorizontal: spacing.xl, paddingVertical: spacing.sm, borderRadius: borderRadius.full, backgroundColor: addRole === opt.value ? colors.brand : colors.slate100 }}>
                       <Text style={{ fontSize: fontSize.sm, fontWeight: "500", color: addRole === opt.value ? colors.white : colors.textSecondary }}>{opt.label}</Text>
@@ -768,29 +768,35 @@ export function UserManagementScreen() {
               const remaining = total - assigned;
               return (
                 <View key={am.id} style={{ marginLeft: indentAm, borderLeftWidth: 2, borderLeftColor: colors.border, paddingLeft: paddingAm, marginTop: spacing.sm }}>
-                    <TouchableOpacity onPress={() => { toggleAm(am.id); handleSelectEntity("am", am); }}
-                      style={{ flexDirection: "row", alignItems: "center", gap: spacing.md, paddingVertical: spacing.md }}>
-                    {isExpanded ? <ChevronDown size={16} color={colors.textSecondary} /> : <ChevronRight size={16} color={colors.textSecondary} />}
-                    <View style={{ width: 28, height: 28, borderRadius: 14, backgroundColor: "#12B76A", alignItems: "center", justifyContent: "center" }}>
-                      <Text style={{ fontSize: fontSize.sm, fontWeight: "700", color: colors.white }}>{am.name.charAt(0)}</Text>
+                    <View style={{ flexDirection: "row", alignItems: "center", gap: spacing.md, paddingVertical: spacing.md }}>
+                      <TouchableOpacity onPress={() => toggleAm(am.id)} style={{ padding: spacing.sm, marginLeft: -spacing.sm }}>
+                        {isExpanded ? <ChevronDown size={16} color={colors.textSecondary} /> : <ChevronRight size={16} color={colors.textSecondary} />}
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => handleSelectEntity("am", am)} style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: spacing.md }}>
+                        <View style={{ width: 28, height: 28, borderRadius: 14, backgroundColor: "#12B76A", alignItems: "center", justifyContent: "center" }}>
+                          <Text style={{ fontSize: fontSize.sm, fontWeight: "700", color: colors.white }}>{am.name.charAt(0)}</Text>
+                        </View>
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ fontSize: fontSize.md, fontWeight: "600", color: colors.text }}>{am.name}</Text>
+                          <Text style={{ fontSize: fontSize.xs, color: colors.textSecondary }}>AM — {assigned}/{total} assigned{remaining > 0 ? `, ${remaining} remaining` : ""}</Text>
+                        </View>
+                      </TouchableOpacity>
                     </View>
-                    <View style={{ flex: 1 }}>
-                      <Text style={{ fontSize: fontSize.md, fontWeight: "600", color: colors.text }}>{am.name}</Text>
-                      <Text style={{ fontSize: fontSize.xs, color: colors.textSecondary }}>AM — {assigned}/{total} assigned{remaining > 0 ? `, ${remaining} remaining` : ""}</Text>
-                    </View>
-                  </TouchableOpacity>
 
                   {isExpanded && aaKids.map((aa) => {
                     const isAaExpanded = expandedAaIds.has(aa.id);
                     return (
                       <View key={aa.id} style={{ marginLeft: indentAa, borderLeftWidth: 2, borderLeftColor: colors.border, paddingLeft: paddingAa }}>
-                        <TouchableOpacity onPress={() => { toggleAa(aa.id); handleSelectEntity("aa", aa); }}
-                          style={{ flexDirection: "row", alignItems: "center", gap: spacing.sm, paddingVertical: spacing.sm }}>
-                          {isAaExpanded ? <ChevronDown size={12} color={colors.textSecondary} /> : <ChevronRight size={12} color={colors.textSecondary} />}
-                          <UserCog size={14} color="#06B6D4" />
-                          <Text style={{ fontSize: fontSize.sm, fontWeight: "500", color: colors.text }}>{aa.name}</Text>
-                          <Text style={{ fontSize: fontSize.xs, color: colors.textSecondary }}>({aa.branchCount || 0})</Text>
-                        </TouchableOpacity>
+                        <View style={{ flexDirection: "row", alignItems: "center", gap: spacing.sm, paddingVertical: spacing.sm }}>
+                          <TouchableOpacity onPress={() => toggleAa(aa.id)} style={{ padding: spacing.sm, marginLeft: -spacing.sm }}>
+                            {isAaExpanded ? <ChevronDown size={12} color={colors.textSecondary} /> : <ChevronRight size={12} color={colors.textSecondary} />}
+                          </TouchableOpacity>
+                          <TouchableOpacity onPress={() => handleSelectEntity("aa", aa)} style={{ flex: 1, flexDirection: "row", alignItems: "center", gap: spacing.sm }}>
+                            <UserCog size={14} color="#06B6D4" />
+                            <Text style={{ fontSize: fontSize.sm, fontWeight: "500", color: colors.text }}>{aa.name}</Text>
+                            <Text style={{ fontSize: fontSize.xs, color: colors.textSecondary }}>({aa.branchCount || 0})</Text>
+                          </TouchableOpacity>
+                        </View>
 
                         {isAaExpanded && (aa.branches || []).map((b) => (
                           <TouchableOpacity key={b.id} onPress={() => handleSelectEntity("branch", { ...b, aaName: aa.name })}

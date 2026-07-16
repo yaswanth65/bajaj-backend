@@ -11,7 +11,7 @@ import { colors, fontSize, spacing, borderRadius } from "../../theme/theme";
 import { NotificationItem } from "../../types/domain";
 
 export function LcNotificationsScreen() {
-  const { state, setTab, scopedNotifications, scopedTasks, scopedComplaints, toggleNotificationRead, toggleBookmark, openTaskDetail, openComplaintDetail, openBranchDetail, showToast } = useApp();
+  const { state, setTab, setPage, scopedNotifications, scopedTasks, scopedComplaints, toggleNotificationRead, toggleBookmark, openTaskDetail, openComplaintDetail, openBranchDetail, showToast } = useApp();
   const filter = state.tabs.notifications;
   const list = scopedNotifications.filter((item) => {
     if (filter === "all") return true;

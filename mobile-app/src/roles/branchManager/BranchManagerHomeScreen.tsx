@@ -37,8 +37,14 @@ export function BranchManagerHomeScreen() {
     rejectRequest,
     openBranchDetail,
     openAuditTrail,
-    scopedComplaints
+    scopedComplaints,
+    state,
+    scopedAttendance
   } = useApp();
+
+  const todayAttendanceLog = scopedAttendance.find(
+    (entry) => String(entry.userId) === String(currentUser.id) && entry.date === state.today
+  );
 
   const getPastDateStr = (days: number) => {
     const d = new Date();
@@ -141,6 +147,18 @@ export function BranchManagerHomeScreen() {
               icon={Users}
               variant="secondary"
               onPress={() => setPage("users")}
+            />
+            <QuickButton
+              label="Attendance Monitor"
+              icon={Users}
+              variant="secondary"
+              onPress={() => setPage("monitoring")}
+            />
+            <QuickButton
+              label={todayAttendanceLog ? "Checked In" : "Give Attendance"}
+              icon={todayAttendanceLog ? Stamp : Stamp}
+              variant={todayAttendanceLog ? "secondary" : "primary"}
+              onPress={() => setPage("attendance")}
             />
 
           </View>

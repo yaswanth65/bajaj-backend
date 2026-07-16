@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
-import { ClipboardCheck, Search, Timer, FileCheck, Layers, ChevronDown, Clock, XCircle, CheckCircle2, UserCheck } from "lucide-react-native";
+import { ClipboardCheck, Search, Timer, FileCheck, Layers, ChevronDown, Clock, XCircle, CheckCircle2, UserCheck, ListChecks } from "lucide-react-native";
 import { ScreenWrapper } from "../../shared/layout/ScreenWrapper";
 import { SectionHeader } from "../../shared/components/SectionHeader";
 import { StatCard } from "../../shared/components/StatCard";
@@ -310,6 +310,22 @@ export function RmMonitoringScreen() {
                                 </View>
                               </View>
                             ) : null}
+
+                            {(() => {
+                              const staffTasks = scopedTasks.filter(t => String(t.assignedTo) === String(user?.id) && (t.status === "Pending" || t.status === "In Progress" || t.status === "Completed") && (t.deadline ? String(t.deadline).slice(0, 10) === record.date : record.date === state.today));
+                              if (staffTasks.length === 0) return null;
+                              return (
+                                <View style={{ marginTop: spacing.lg, borderTopWidth: 1, borderColor: colors.slate100, paddingTop: spacing.md, gap: spacing.xs }}>
+                                  <Text style={{ fontSize: fontSize.xs, color: colors.slate400, textTransform: "uppercase", letterSpacing: 1, marginBottom: spacing.xs }}>Picked Tasks</Text>
+                                  {staffTasks.map(t => (
+                                    <View key={t.id} style={{ flexDirection: "row", alignItems: "center", gap: spacing.sm }}>
+                                      <ListChecks size={14} color={t.status === "Completed" ? colors.success : colors.brandSecondary} />
+                                      <Text style={{ fontSize: fontSize.sm, color: t.status === "Completed" ? colors.slate400 : colors.slate700, textDecorationLine: t.status === "Completed" ? "line-through" : "none" }}>{t.title}</Text>
+                                    </View>
+                                  ))}
+                                </View>
+                              );
+                            })()}
                           </View>
                         );
                       })}

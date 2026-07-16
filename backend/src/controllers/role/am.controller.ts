@@ -157,6 +157,7 @@ export const amAttendance = async (req: AuthenticatedRequest, res: Response) => 
 
     const [attendanceLogs, allUsers, scopedChecks] = await Promise.all([
       prisma.attendanceLog.findMany({
+        where: { user: userScopeFilter },
         select: {
           id: true,
           userId: true,
@@ -185,6 +186,7 @@ export const amAttendance = async (req: AuthenticatedRequest, res: Response) => 
           branchId: true,
           status: true,
           attendancePct: true,
+          branchScope: true,
         },
         orderBy: { name: "asc" },
       }),

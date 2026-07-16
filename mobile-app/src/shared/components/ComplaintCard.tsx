@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import { Complaint } from "../../types/domain";
 import { useApp } from "../../context/AppContext";
 import { colors, fontSize, spacing, borderRadius, shadows } from "../../theme/theme";
@@ -57,6 +57,19 @@ export function ComplaintCard({ item, showRaiseToVendor = false, actions }: Prop
 
         {/* Description */}
         <Text style={{ fontSize: fontSize.sm, fontWeight: "400", color: colors.slate700 }} numberOfLines={2}>{item.description}</Text>
+
+        {item.attachmentUrls?.[0] ? (
+          <TouchableOpacity
+            onPress={() => openComplaintDetail(item.id)}
+            activeOpacity={0.8}
+            style={{ alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: spacing.sm }}
+          >
+            <Image source={{ uri: item.attachmentUrls[0] }} style={{ width: 64, height: 48, borderRadius: borderRadius.md, backgroundColor: colors.slate100 }} resizeMode="cover" />
+            <Text style={{ fontSize: fontSize.xs, fontWeight: "600", color: colors.brand }}>
+              {item.attachmentUrls.length} uploaded photo{item.attachmentUrls.length === 1 ? "" : "s"} · View
+            </Text>
+          </TouchableOpacity>
+        ) : null}
 
         {/* Info Grid */}
         <View style={{ flexDirection: "row", flexWrap: "wrap", gap: spacing.lg }}>
