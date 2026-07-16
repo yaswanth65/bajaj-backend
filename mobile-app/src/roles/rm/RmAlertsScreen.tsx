@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { View, Text, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, Modal, ScrollView } from "react-native";
 import { TriangleAlert, AlertCircle, Info, Bell, CheckCircle, Shield, Layers, Building, Users, Wrench, Route } from "lucide-react-native";
 import { ScreenWrapper } from "../../shared/layout/ScreenWrapper";
 import { SectionHeader } from "../../shared/components/SectionHeader";
@@ -473,17 +473,12 @@ export function RmAlertsScreen() {
       )}
 
       {/* Overlay Modal for Exception Section Details */}
-      {selectedExceptionSection !== null && (
+      <Modal visible={selectedExceptionSection !== null} transparent animationType="fade" onRequestClose={() => setSelectedExceptionSection(null)}>
         <View style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
+          flex: 1,
           backgroundColor: "rgba(15, 23, 42, 0.4)",
           justifyContent: "center",
           alignItems: "center",
-          zIndex: 1000,
           padding: spacing.xl,
         }}>
           <View style={{
@@ -549,7 +544,7 @@ export function RmAlertsScreen() {
             </View>
           </View>
         </View>
-      )}
+      </Modal>
     </ScreenWrapper>
   );
 }

@@ -145,6 +145,7 @@ export const bmAttendance = async (req: AuthenticatedRequest, res: Response) => 
         where: {
           OR: [
             { user: { branchId: { in: scopedBranchIds } } },
+            { user: { managerId: user.id } },
             { userId: user.id }
           ]
         },
@@ -168,7 +169,7 @@ export const bmAttendance = async (req: AuthenticatedRequest, res: Response) => 
 
       // Users in scope Ã¢â‚¬â€ only fields BM attendance screen uses
       prisma.user.findMany({
-        where: { branchId: { in: scopedBranchIds } },
+        where: { OR: [{ branchId: { in: scopedBranchIds } }, { managerId: user.id }] },
         select: {
           id: true,
           name: true,
@@ -176,6 +177,7 @@ export const bmAttendance = async (req: AuthenticatedRequest, res: Response) => 
           branchId: true,
           status: true,
           attendancePct: true,
+          branchScope: true,
         },
         orderBy: { name: "asc" },
       }),
@@ -393,6 +395,7 @@ export const bmComplaints = async (req: AuthenticatedRequest, res: Response) => 
         vendorRemarks: true,
         raisedById: true,
         assetId: true,
+        attachmentUrls: true,
         createdAt: true,
         updatedAt: true,
       },

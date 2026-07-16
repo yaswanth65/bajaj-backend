@@ -11,7 +11,7 @@ import { colors, fontSize, spacing, borderRadius } from "../../theme/theme";
 import { NotificationItem } from "../../types/domain";
 
 export function BranchManagerNotificationsScreen() {
-  const { state, setTab, scopedNotifications, scopedTasks, scopedComplaints, scopedApprovals, toggleNotificationRead, toggleBookmark, openTaskDetail, openComplaintDetail, openBranchDetail, openApprovalDetail, showToast } = useApp();
+  const { state, setTab, setPage, scopedNotifications, scopedTasks, scopedComplaints, scopedApprovals, toggleNotificationRead, toggleBookmark, openTaskDetail, openComplaintDetail, openBranchDetail, openApprovalDetail, showToast } = useApp();
   const activeTab = state.tabs.notifications;
 
   const filtered = scopedNotifications.filter((n) => {

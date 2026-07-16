@@ -561,7 +561,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
           console.error("Timeline parse error: ", err);
           parsedTimeline = [];
         }
-        return { ...c, raisedById: c.raisedByIdId || c.raisedById, timeline: parsedTimeline };
+        const rawAttachments = c.attachmentUrls ?? c.attachments ?? [];
+        let attachmentUrls: string[] = [];
+        try {
+          attachmentUrls = Array.isArray(rawAttachments)
+            ? rawAttachments.filter((url): url is string => typeof url === "string" && url.trim().length > 0)
+            : typeof rawAttachments === "string" ? JSON.parse(rawAttachments) : [];
+        } catch {
+          attachmentUrls = typeof rawAttachments === "string" && rawAttachments.trim() ? [rawAttachments] : [];
+        }
+        return { ...c, attachmentUrls, raisedById: c.raisedByIdId || c.raisedById, timeline: parsedTimeline };
       };
 
       // Helper to map attendance records
@@ -986,7 +995,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
         formData.append("notes", textRemarks);
       }
 
-      await apiClient.post(`/tasks/${taskId}/submit-proof`, formData);
+      let response;
+      if (Platform.OS === "web") {
+        response = await apiClient.post(`/tasks/${taskId}/submit-proof`, formData, {
+          headers: { "Content-Type": "multipart/form-data" }
+        });
+      } else {
+        const token = await getSecure("auth_token");
+        response = await fetch(`${apiClient.defaults.baseURL}/tasks/${taskId}/submit-proof`, {
+          method: "POST",
+          headers: { "Authorization": `Bearer ${token}` },
+          body: formData
+        });
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.message || "Failed to submit check proof");
+        }
+      }
+
       addAuditEntry(`Task proof submitted by ${currentUser.name}`, "CheckCircle", "#10B981");
       showToast("Verification proof submitted successfully");
       await refreshData();
@@ -1297,11 +1323,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
         }
       }
 
-      await apiClient.post("/complaints", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      let response;
+      if (Platform.OS === "web") {
+        response = await apiClient.post("/complaints", formData, {
+          headers: { "Content-Type": "multipart/form-data" }
+        });
+      } else {
+        const token = await getSecure("auth_token");
+        response = await fetch(`${apiClient.defaults.baseURL}/complaints`, {
+          method: "POST",
+          headers: { "Authorization": `Bearer ${token}` },
+          body: formData
+        });
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.message || "Failed to create complaint");
+        }
+      }
 
       addAuditEntry(`Issue raised by ${currentUser.name}`, "Zap", "#EF4444");
       showToast("Complaint submitted");

@@ -63,7 +63,7 @@ export function RmDashboardScreen() {
           subtitle={`${totalBranches} branches · ${amCount} AM · ${aaCount} AA · ${lcCount} LC`}
         />
 
-        <AlertStrip onReviewAlerts={() => setPage("alerts")} onOpenAudit={openAuditTrail} />
+        <AlertStrip onReviewAlerts={() => setPage("notifications")} onOpenAudit={openAuditTrail} />
 
         {/* ── Quick Actions — prominent top row ── */}
         <View style={{ marginTop: spacing.xl }}>
@@ -74,7 +74,7 @@ export function RmDashboardScreen() {
             <QuickButton label="Add User" icon={UserPlus} onPress={() => setPage("users")} variant="primary" />
             <QuickButton label="View Users" icon={Users} onPress={() => setPage("users")} variant="secondary" />
             <QuickButton label="Analytics" icon={ChartColumn} onPress={() => setPage("analytics")} variant="secondary" />
-            <QuickButton label="Alerts" icon={Bell} onPress={() => setPage("alerts")} variant="warning" />
+            <QuickButton label="Alerts" icon={Bell} onPress={() => setPage("notifications")} variant="warning" />
             <QuickButton label="Attendance" icon={Users} onPress={() => setPage("attendance")} variant="secondary" />
           </View>
         </View>

@@ -50,21 +50,24 @@ export function BranchManagerMonitoringScreen() {
   const [visibleTasksLimit, setVisibleTasksLimit] = useState(30);
 
   const [attendanceRecords, setAttendanceRecords] = useState<any[]>([]);
+  const [attendanceUsers, setAttendanceUsers] = useState<any[]>([]);
   const [loadingAttendance, setLoadingAttendance] = useState(false);
 
   const fetchAttendance = useCallback(async () => {
     if (activeTab !== "attendance") return;
     setLoadingAttendance(true);
     try {
-      const res = await apiClient.get("/bm/attendance");
+      const res = await apiClient.get(state.role === "am" ? "/am/attendance" : "/bm/attendance");
       setAttendanceRecords(res.data.attendance || []);
+      setAttendanceUsers(res.data.users || []);
     } catch (e) {
       console.error("Failed to fetch attendance:", e);
       setAttendanceRecords([]);
+      setAttendanceUsers([]);
     } finally {
       setLoadingAttendance(false);
     }
-  }, [activeTab]);
+  }, [activeTab, state.role]);
 
   useEffect(() => {
     fetchAttendance();
@@ -119,7 +122,6 @@ export function BranchManagerMonitoringScreen() {
     return scopedTasks.filter((t) => {
       if (!activeBranchIds.includes(t.branchId)) return false;
       if (activeTab === "weekly" && t.schedule !== "Weekly") return false;
-      if (activeTab === "tasks" && t.schedule === "Weekly") return false;
       if (statusFilter !== "all" && t.status !== statusFilter) return false;
       const taskDate = t.deadline ? String(t.deadline).slice(0, 10) : "";
       if (fromDate && taskDate < fromDate) return false;
@@ -150,7 +152,10 @@ export function BranchManagerMonitoringScreen() {
       ? [selectedBranchId]
       : branchesInRegion.map(b => b.id);
 
-    const branchUserIds = scopedUsers.filter(u => activeBranchIds.includes(u.branchId) && u.role === "aa").map(u => u.id);
+    const branchUserIds = attendanceUsers.filter((u) => {
+      if (u.role !== "aa" && u.role !== "lc") return false;
+      return activeBranchIds.includes(u.branchId) || (u.branchScope || []).some((id: string) => activeBranchIds.includes(id));
+    }).map((u) => u.id);
 
     return attendanceRecords.filter(a => {
       if (!branchUserIds.includes(a.userId)) return false;
@@ -160,12 +165,12 @@ export function BranchManagerMonitoringScreen() {
       if (toDate && dateStr > toDate) return false;
       
       if (searchQuery) {
-        const u = scopedUsers.find(user => user.id === a.userId);
+        const u = attendanceUsers.find(user => user.id === a.userId) || scopedUsers.find(user => user.id === a.userId);
         if (!u?.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
       }
       return true;
     });
-  }, [attendanceRecords, branchesInRegion, selectedRegion, selectedBranchId, scopedUsers, fromDate, toDate, searchQuery]);
+  }, [attendanceRecords, attendanceUsers, branchesInRegion, selectedRegion, selectedBranchId, scopedUsers, fromDate, toDate, searchQuery]);
 
   return (
     <ScreenWrapper>
@@ -211,7 +216,7 @@ export function BranchManagerMonitoringScreen() {
             <SegmentedControl
               tabs={[
                 { label: "Weekly Checks", value: "weekly" },
-                { label: "Attendance", value: "attendance" },
+                { label: "Attendance Monitor", value: "attendance" },
               ]}
               activeKey={activeTab}
               onChange={(v) => setTab("managerMonitoring", v)}
@@ -236,7 +241,7 @@ export function BranchManagerMonitoringScreen() {
               <TextInput
                 value={searchQuery}
                 onChangeText={setSearchQuery}
-                placeholder={activeTab === "attendance" ? "Search AA staff..." : "Search checks..."}
+                placeholder={activeTab === "attendance" ? "Search AA or LC staff..." : "Search checks..."}
                 placeholderTextColor={colors.slate400}
                 style={{ flex: 1, paddingVertical: spacing.md, paddingHorizontal: spacing.sm, color: colors.slate900, fontSize: fontSize.sm }}
               />
@@ -265,7 +270,7 @@ export function BranchManagerMonitoringScreen() {
                   <View style={{ width: 32, height: 32, borderRadius: borderRadius.md, backgroundColor: colors.success + "15", alignItems: "center", justifyContent: "center" }}>
                     <Clock size={16} color={colors.success} strokeWidth={2} />
                   </View>
-                  <Text style={{ fontSize: fontSize.lg, fontWeight: "400", color: colors.text }}>Admin Assistant Attendance</Text>
+                  <Text style={{ fontSize: fontSize.lg, fontWeight: "400", color: colors.text }}>Staff Attendance Monitor</Text>
                 </View>
                 <ScrollView style={{ maxHeight: 500 }} showsVerticalScrollIndicator={false}>
                   {loadingAttendance ? (
@@ -273,7 +278,7 @@ export function BranchManagerMonitoringScreen() {
                   ) : filteredAttendance.length > 0 ? (
                     <View style={{ gap: spacing.md }}>
                       {filteredAttendance.map((record) => {
-                        const user = scopedUsers.find(u => u.id === record.userId);
+                        const user = attendanceUsers.find(u => u.id === record.userId) || scopedUsers.find(u => u.id === record.userId);
                         const isPresent = record.status === "Present" || record.status === "Late";
                         return (
                           <View key={record.id} style={{ backgroundColor: colors.white, borderRadius: borderRadius["2xl"], padding: spacing.xl, borderWidth: 1, borderColor: colors.border }}>

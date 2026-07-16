@@ -143,7 +143,9 @@ export const createComplaint = async (req: AuthenticatedRequest, res: Response) 
           const url = await uploadImageToCloudinary(file.buffer, "complaint_photos");
           uploadedUrls.push(url);
         } catch (err) {
-          console.error("Cloudinary upload failed for a complaint attachment:", err);
+          console.error("Cloudinary upload failed for a complaint attachment; storing the image inline:", err);
+          const mimeType = file.mimetype || "image/jpeg";
+          uploadedUrls.push(`data:${mimeType};base64,${file.buffer.toString("base64")}`);
         }
       }
     }

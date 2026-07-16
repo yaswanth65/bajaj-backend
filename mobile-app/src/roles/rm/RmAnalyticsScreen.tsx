@@ -207,7 +207,7 @@ export function RmAnalyticsScreen() {
                 </View>
                 <View style={{ gap: spacing.md }}>
                   {data.alerts && data.alerts.length > 0 ? data.alerts.map((branch: any) => (
-                    <TouchableOpacity key={branch.branchId} onPress={() => openBranchDetail(branch.branchId)} style={{ flexDirection: "row", gap: spacing.lg, backgroundColor: colors.rose50, borderRadius: borderRadius.xl, padding: spacing.xl, alignItems: "flex-start" }}>
+                    <View key={branch.branchId} style={{ flexDirection: "row", gap: spacing.lg, backgroundColor: colors.rose50, borderRadius: borderRadius.xl, padding: spacing.xl, alignItems: "flex-start" }}>
                       <View style={{ width: 36, height: 36, borderRadius: borderRadius.md, backgroundColor: colors.error + "20", alignItems: "center", justifyContent: "center" }}>
                         <AlertCircle size={18} color={colors.error} strokeWidth={2} />
                       </View>
@@ -220,7 +220,7 @@ export function RmAnalyticsScreen() {
                           Tasks Done: {branch.completedTasks ?? 0} / {branch.totalTasks ?? 0}
                         </Text>
                       </View>
-                    </TouchableOpacity>
+                    </View>
                   )) : (
                     <Text style={{ fontSize: fontSize.sm, color: colors.textSecondary, fontStyle: "italic", textAlign: "center", paddingVertical: spacing.lg }}>
                       No branches currently at risk.
@@ -239,7 +239,7 @@ export function RmAnalyticsScreen() {
                 </View>
                 <View style={{ gap: spacing.lg }}>
                   {data.leaderboard && data.leaderboard.map((branch: any, index: number) => (
-                    <TouchableOpacity key={branch.branchId} onPress={() => openBranchDetail(branch.branchId)} style={{ backgroundColor: colors.slate50, borderRadius: borderRadius.xl, padding: spacing.xl }}>
+                    <View key={branch.branchId} style={{ backgroundColor: colors.slate50, borderRadius: borderRadius.xl, padding: spacing.xl }}>
                       <View style={{ flexDirection: "row", alignItems: "center", marginBottom: spacing.md }}>
                         <View style={{ width: 32, height: 32, borderRadius: borderRadius.full, backgroundColor: index === 0 ? colors.amber50 : index === 1 ? colors.slate200 : index === 2 ? colors.orange50 : colors.white, alignItems: "center", justifyContent: "center", marginRight: spacing.md }}>
                           <Text style={{ fontSize: fontSize.sm, fontWeight: "bold", color: index === 0 ? colors.amber500 : index === 1 ? colors.slate600 : index === 2 ? colors.orange600 : colors.textSecondary }}>
@@ -268,7 +268,7 @@ export function RmAnalyticsScreen() {
                           <Text style={{ fontSize: fontSize.sm, fontWeight: "600", color: colors.text }}>{branch.todayAttendance ?? 0}%</Text>
                         </View>
                       </View>
-                    </TouchableOpacity>
+                    </View>
                   ))}
                 </View>
               </Card>
